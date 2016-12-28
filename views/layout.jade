@@ -7,9 +7,16 @@ html
         include styles.jade
 
     body
-    
-        block content
 
-        include footer.jade
+        include navbar.jade
+        
+        div.container-fluid
+            div.row
+                div.col-sm-3.col-md-2.sidebar
+                    include menu.jade
+                    
+                div.col-sm-9.offset-sm-3.col-md-10.offset-md-2.main
+                    block content
+                    include footer.jade
 
     include scripts.jade
