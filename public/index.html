@@ -15,13 +15,9 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar">
-                    <div ng-include="'../includes/menu.html'"></div>
-                </div>
-                <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
-                    <div ng-view></div>
-                    <div ng-include="'../includes/footer.html'"></div>
-                </div>
+                <nav ng-include="'../includes/menu.html'" class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar"></nav>
+
+                <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" ng-view ></main>
             </div>
         </div>
 
@@ -49,6 +45,8 @@
                 crossorigin='anonymous'></script>
 
         <script src='../javascripts/controllers/main_controller.js'></script>
+        <script src='../javascripts/controllers/security_system.js'></script>
+        <script src='../javascripts/controllers/dummy_controller.js'></script>
 
     </body>
 </html>
