@@ -1,5 +1,6 @@
 var http = require( 'http' );
 
+// application global info for api connection
 var g_opts = {
     hostname : 'balpres-be-gunt2raro.c9users.io',
     api_uri : 'http://balpres-be-gunt2raro.c9users.io:8080/api/',
@@ -7,16 +8,19 @@ var g_opts = {
     token : 'ZmVfYmFscHJlc190ZXN0X2FwcDpQUTVWRUt1OV81UXVuQ3o5'
 };
 
+// Get the full api uri compose with the model and the url data
 var get_api_uri = function( model, url_data ) {
     return g_opts.api_uri + model + url_data;
 };
 
+// Get the basic authorization appliation header
 var get_basic_auth_app_header = function( ) {
     return 'Basic ' + g_opts.token;
 };
 
+// Get the user basic authorization appliation header with pass and username
 var get_user_basic_auth = function( username, password ) {
-    return 'Basic ' + ( new Buffer( username + ':' + password ).toString( 'base64' ) );
+    return( new Buffer( username + ':' + password ).toString( 'base64' ) );
 };
 
 // do magic

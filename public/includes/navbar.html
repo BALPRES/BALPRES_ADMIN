@@ -6,16 +6,19 @@
         aria-controls="navbar"
         aria-label="Toggle navigation"></button>
 
-<a class="navbar-brand" href="#">{{project_name}}</a>
+<a class="navbar-brand" href="#/">{{project_name}}</a>
 
-<div id="navbar">
+<div id="navbar" >
     <nav class="nav navbar-nav float-xs-left">
-    <a class="nav-item nav-link" href="#"><button class="btn btn-sm align-middle btn-outline-success" type="button">Dashboard</button></a>
-    <a class="nav-item nav-link" href="#"><button class="btn btn-sm align-middle btn-outline-success" type="button">Settings</button></a>
-    <a class="nav-item nav-link" href="#"><button class="btn btn-sm align-middle btn-outline-success" type="button">Profile</button></a>
-    <a class="nav-item nav-link" href="#"><button class="btn btn-sm align-middle btn-outline-success" type="button">Help</button></a>
+        <a class="nav-item nav-link">
+            Bienvenido {{ user_info.name }}
+        </a>
     </nav>
-    <form class="float-xs-right">
-    <input type="text" class="form-control" placeholder="Search...">
-    </form>
+    <nav class="nav navbar-nav float-xs-right">
+        <a class="nav-item nav-link" href="#/"><button class="btn btn-sm align-middle btn-outline-success" type="button"><i class="fa fa-home" aria-hidden="true"></i> Inicio</button></a>
+        <a class="nav-item nav-link" href="#/"><button class="btn btn-sm align-middle btn-outline-success" type="button"><i class="fa fa-globe" aria-hidden="true"></i> Sitio</button></a>
+        <a class="nav-item nav-link" href="#/settings"><button class="btn btn-sm align-middle btn-outline-success" type="button"><i class="fa fa-cogs" aria-hidden="true"></i> Ajustes</button></a>
+        <a class="nav-item nav-link" href="#/help"><button class="btn btn-sm align-middle btn-outline-success" type="button"><i class="fa fa-question-circle" aria-hidden="true"></i> Ayuda</button></a>
+        <a class="nav-item nav-link" href="#/" ng-click="logout()"><button class="btn btn-sm align-middle btn-outline-danger" type="button"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</button></a>
+    </nav>
 </div>

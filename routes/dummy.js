@@ -83,21 +83,19 @@ router.post( '/encrypttest', jsonParser, function( req, res ) {
             }
         },
         function( error, response, body ) {
-            var data_from_server = encryption_system.decryptJSON( body );
-            res.send( data_from_server.message );
+            if( response.statusCode != 400 && response.statusCode != 403 ) {
+                var data_from_server = encryption_system.decryptJSON( body );
+                res.send( data_from_server.message );
+            } else {
+                res.status( 403 );
+                res.send( "There was an error" );
+            }
         }
     );
 
 });
 
 router.post( '/cookietest', jsonParser, function( req, res ) {
-    var user_data = {
-        username : 'codethefunkout',
-        auth_data : http_helper.get_user_basic_auth( 'codethefunkout', '%Ralogu2' )
-    };
-    console.log( "This entered here but don't know what happened" );
-    res.cookie( 'userdata', JSON.stringify( user_data ) );
-    console.log( "No error on the cookie shit" );
     res.send( 'This is sended by the front end server side on the cookie test.' );
 });
 

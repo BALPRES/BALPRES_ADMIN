@@ -7,19 +7,22 @@
                                 integrity='sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi'
                                 crossorigin='anonymous' />
         <link rel='stylesheet' href='../stylesheets/dashboard.css'/>
-
     </head>
     <body>
 
-        <nav ng-include="'../includes/navbar.html'" class="navbar navbar-dark navbar-fixed-top bg-inverse" ng-controller="navbar-controller"></nav>
+        <div ng-show="isLoggedIn.show_app">
+            <nav ng-include="'../includes/navbar.html'" class="navbar navbar-dark navbar-fixed-top bg-inverse" ng-controller="navbar-controller"></nav>
 
-        <div class="container-fluid">
-            <div class="row">
-                <nav ng-include="'../includes/menu.html'" class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar"></nav>
+            <div class="container-fluid">
+                <div class="row">
+                    <nav ng-include="'../includes/menu.html'" class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar" ng-controller="menu-cotroller"></nav>
 
-                <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" ng-view ></main>
+                    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" ng-view ></main>
+                </div>
             </div>
         </div>
+
+        <div ng-include="'../includes/auth.html'" ng-show="isLoggedIn.show_auth"></div>
 
         <!-- jQuery -->
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js'
@@ -43,6 +46,8 @@
         <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js'
                 integrity='sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK'
                 crossorigin='anonymous'></script>
+
+        <script src="https://use.fontawesome.com/385368c8c3.js"></script>
 
         <script src='../javascripts/controllers/main_controller.js'></script>
         <script src='../javascripts/controllers/security_system.js'></script>

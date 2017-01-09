@@ -58,61 +58,65 @@ app
             }
         });
     }])
-    .controller( 'dummy-controller', [ '$scope', 'DummyRepository', 'AuthRepository', function( $scope, DummyRepository, AuthRepository ) {
+    .controller( 'dummy-controller', [ '$scope', '$rootScope', '$location', 'DummyRepository', 'AuthRepository', function( $scope, $rootScope, $location, DummyRepository, AuthRepository ) {
 
-        $scope.fe = {
-            message : "",
-            message_cookie : "",
-            username : "",
-            token : ""
-        };
+        if( AuthRepository.viewVerification() ) {
 
-        $scope.be = {
-            message : "",
-            message_auth : "",
-            message_encrypt : ""
-        };
+            $scope.fe = {
+                message : "",
+                message_cookie : "",
+                username : "",
+                token : ""
+            };
 
-        DummyRepository.FESimpleConn().success( function( data ) {
-            console.log( data );
-            $scope.fe.message = data;
-        }).error( function( error ) {
-            console.log( error );
-            $scope.fe.message = error;
-        });
+            $scope.be = {
+                message : "",
+                message_auth : "",
+                message_encrypt : ""
+            };
 
-        DummyRepository.BESimpleConn().success( function( data ) {
-            console.log( data );
-            $scope.be.message = data;
-        }).error( function( error ) {
-            console.log( error );
-            $scope.be.message = error;
-        });
+            DummyRepository.FESimpleConn().success( function( data ) {
+                console.log( data );
+                $scope.fe.message = data;
+            }).error( function( error ) {
+                console.log( error );
+                $scope.fe.message = error;
+            });
 
-        DummyRepository.BasicAuthTest().success( function( data ) {
-            console.log( data );
-            $scope.be.message_auth = data;
-        }).error( function( error ) {
-            console.log( error );
-            $scope.be.message_auth = error;
-        });
+            DummyRepository.BESimpleConn().success( function( data ) {
+                console.log( data );
+                $scope.be.message = data;
+            }).error( function( error ) {
+                console.log( error );
+                $scope.be.message = error;
+            });
 
-        DummyRepository.EncryptTest().success( function( data ) {
-            console.log( data );
-            $scope.be.message_encrypt = data;
-        }).error( function( error ) {
-            console.log( error );
-            $scope.be.message_encrypt = error;
-        });
+            DummyRepository.BasicAuthTest().success( function( data ) {
+                console.log( data );
+                $scope.be.message_auth = data;
+            }).error( function( error ) {
+                console.log( error );
+                $scope.be.message_auth = error;
+            });
 
-        DummyRepository.TestCookies().success( function( data ) {
-            var user_data = AuthRepository.getSession();
-            $scope.fe.message_cookie = data;
-            $scope.fe.username = user_data.username;
-            $scope.fe.token = user_data.auth_data;
-        }).error( function( error ) {
-            console.log( error );
-            $scope.fe.message_cookie = error;
-        });
+            DummyRepository.EncryptTest().success( function( data ) {
+                console.log( data );
+                $scope.be.message_encrypt = data;
+            }).error( function( error ) {
+                console.log( error );
+                $scope.be.message_encrypt = error;
+            });
+
+            DummyRepository.TestCookies().success( function( data ) {
+                var user_data = AuthRepository.getSession();
+                $scope.fe.message_cookie = data;
+                $scope.fe.username = user_data.username;
+                $scope.fe.token = user_data.auth_data;
+            }).error( function( error ) {
+                console.log( error );
+                $scope.fe.message_cookie = error;
+            });
+
+        }
 
     }]);
