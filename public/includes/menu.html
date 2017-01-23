@@ -1,20 +1,30 @@
+<!--- general menu ------->
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link active" href="#/overview">Overview<span class="sr-only">(current)</span></a></li>
-    <li class="nav-item"><a class="nav-link" href="#"> Reports</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"> Analytics</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"> Export</a></li>
-</ul>
-<!--- second menu ------->
-<ul class="nav nav-pills flex-column">
-    <li ng-repeat="mi in snd_menu_items" class="nav-item">
+    <li ng-repeat="mi in snd_menu_items.general" class="nav-item">
         <a class="nav-link {{mi.status}}" href="{{mi.link}}"><i class="{{mi.icon}}" aria-hidden="true"></i> {{mi.name}}</a>
     </li>
 </ul>
 
+<!--- objects menu ------->
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link" href="#"> Nav item</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"> Nav item</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"> Nav item</a></li>
+    <li ng-repeat="mi in snd_menu_items.objects" class="nav-item">
+        <a class="nav-link {{mi.status}}" href="{{mi.link}}"><i class="{{mi.icon}}" aria-hidden="true"></i> {{mi.name}}</a>
+    </li>
 </ul>
+
+<!--- sales menu ------->
+<ul class="nav nav-pills flex-column">
+    <li ng-repeat="mi in snd_menu_items.sales" class="nav-item">
+        <a class="nav-link {{mi.status}}" href="{{mi.link}}"><i class="{{mi.icon}}" aria-hidden="true"></i> {{mi.name}}</a>
+    </li>
+</ul>
+
+<!--- settings menu ------->
+<ul class="nav nav-pills flex-column">
+    <li ng-repeat="mi in snd_menu_items.settings" class="nav-item">
+        <a class="nav-link {{mi.status}}" href="{{mi.link}}"><i class="{{mi.icon}}" aria-hidden="true"></i> {{mi.name}}</a>
+    </li>
+</ul>
+
 
 <div class="row" ng-include="'../includes/footer.html'"></div>

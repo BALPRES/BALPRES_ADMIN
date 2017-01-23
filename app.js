@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -6,9 +7,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var dummy = require( './routes/dummy' );
 var auth = require( './routes/auth' );
+var areatype = require( './routes/area_types' );
+var cabintype = require( './routes/cabin_types' );
+var cabin = require( './routes/cabin' );
+var pool = require( './routes/pool' );
 
 var app = express();
 
@@ -21,9 +25,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-// app.use('/users', users);
 app.use( '/dummy', dummy );
 app.use( '/auth', auth );
+app.use( '/areatype', areatype );
+app.use( '/cabintype', cabintype );
+app.use( '/cabin', cabin );
+app.use( '/pool', pool );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

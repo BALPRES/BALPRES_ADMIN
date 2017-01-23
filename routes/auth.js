@@ -57,6 +57,7 @@ router.post( '/login', jsonParser, function( req, res ) {
                     });
                     var user_data = JSON.stringify({
                         username : form_data.username,
+                        rol : data_from_server.data,
                         auth_data : encryption_system.encryptCookie( http_helper.get_user_basic_auth( form_data.username, form_data.password ) )
                     });
                     res.cookie( 'userdata', user_data )
