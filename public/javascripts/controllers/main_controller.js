@@ -31,6 +31,9 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             .when( '/cabins', {
                 templateUrl : '../views/cabins/list.html'
             })
+            .when( '/areas', {
+                templateUrl : '../views/areas/list.html'
+            })
             // area types
             .when( '/areatypes/edit/:id', {
                 templateUrl : '../views/areatypes/edit.html'
@@ -80,8 +83,15 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             .when( '/pools/new/', {
                 templateUrl : '../views/pools/new.html'
             })
-            .when( '/pools', {
-                templateUrl : '../views/pools/list.html'
+            // areas
+            .when( '/areas/edit/:id', {
+                templateUrl : '../views/areas/edit.html'
+            })
+            .when( '/areas/detail/:id', {
+                templateUrl : '../views/areas/detail.html'
+            })
+            .when( '/areas/new/', {
+                templateUrl : '../views/areas/new.html'
             })
             .otherwise({
                 redirectTo : '/404'

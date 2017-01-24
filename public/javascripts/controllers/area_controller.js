@@ -1,37 +1,37 @@
 app
-    .factory( 'CabinRepository', [ '$http', function( $http ) {
+    .factory( 'AreaRepository', [ '$http', function( $http ) {
         return({
             getAll : function(  ) {
                 return $http({
-                    url : '/cabin',
+                    url : '/area',
                     method : 'GET'
                 });
             },
             add : function( data ) {
                 var jsonData = JSON.stringify( data );
                 return $http({
-                    url : '/cabin',
+                    url : '/area',
                     method : 'POST',
                     data : jsonData
                 });
             },
             getById : function( id ) {
                 return $http({
-                    url : '/cabin/' + id,
+                    url : '/area/' + id,
                     method : 'GET'
                 });
             },
             update : function( data ) {
                 var jsonData = JSON.stringify(data);
                 return $http({
-                    url : '/cabin/' + data.id,
+                    url : '/area/' + data.id,
                     method : 'PUT',
                     data : jsonData
                 });
             },
             remove : function( id ) {
                 return $http({
-                    url : '/cabin/' + id,
+                    url : '/area/' + id,
                     method : 'DELETE'
                 });
             },
@@ -56,7 +56,7 @@ app
                     ban = false;
                     scope.errors += "Agregué un precio válido. \n";
                 }
-                if( data.cabin_type > 0 ) {
+                if( data.area_type > 0 ) {
                     ban = true;
                 } else {
                     ban = false;
@@ -66,30 +66,30 @@ app
             }
         });
     }])
-    .controller( 'cabin-controller',
+    .controller( 'area-controller',
                 [   '$scope',
-                    '$rootScope',
                     '$location',
                     '$routeParams',
                     '$mdDialog',
-                    'CabinRepository',
-                    'CabinTypeRepository',
+                    'AreaRepository',
+                    'AreaTypeRepository',
+                    'PoolRepository',
                     function(
                         $scope,
-                        $rootScope,
                         $location,
                         $routeParams,
                         $mdDialog,
-                        CabinRepository,
-                        CabinTypeRepository ) {
+                        AreaRepository,
+                        AreaTypeRepository,
+                        PoolRepository ) {
 
-        $scope.title = "Cabañas";
+        $scope.title = "Áreas";
 
-        var allCabins = function() {
-            CabinRepository.getAll().success( function( data ) {
+        var allAreas = function() {
+            AreaRepository.getAll().success( function( data ) {
                 if (!data.error) {
                     var the_data = data.data;
-                    $scope.cabins = the_data.data;
+                    $scope.areas = the_data.data;
                 } else {
                     $scope.errors = data.message;
                 }
@@ -98,11 +98,24 @@ app
             });
         };
 
-        var allCabinTypes = function() {
-            CabinTypeRepository.getAll().success( function( data ) {
+        var allAreaTypes = function() {
+            AreaTypeRepository.getAll().success( function( data ) {
                 if (!data.error) {
                     var the_data = data.data;
-                    $scope.cabintypes = the_data.data;
+                    $scope.areatypes = the_data.data;
+                } else {
+                    $scope.errors = data.message;
+                }
+            }).error( function( error ) {
+                $scope.errors = error;
+            });
+        };
+
+        var allPools = function() {
+            PoolRepository.getAll().success( function( data ) {
+                if( !data.error ) {
+                    var the_data = data.data;
+                    $scope.pools = the_data.data;
                 } else {
                     $scope.errors = data.message;
                 }
@@ -113,41 +126,57 @@ app
 
         if( $routeParams.id ) {
 
-            CabinTypeRepository.getAll().success( function( data ) {
-
+            PoolRepository.getAll().success( function( data ) {
                 if( !data.error ) {
-
                     var the_data = data.data;
-                    $scope.cabintypes = the_data.data;
+                    $scope.pools = the_data.data;
+                    AreaTypeRepository.getAll().success( function( d1 ) {
 
-                    CabinRepository.getById( $routeParams.id ).success( function( d ) {
-                        if( !d.error ) {
-                            $scope.cabin = d.data;
-                            $scope.cabin.price = parseFloat( $scope.cabin.price );
-                            $scope.cabin.cabin_type = $scope.cabintypes.find( ct => ct.id == $scope.cabin.cabin_type );
+                        if( !d1.error ) {
+
+                            var the_data = d1.data;
+                            $scope.areatypes = the_data.data;
+
+                            AreaRepository.getById( $routeParams.id ).success( function( d2 ) {
+                                if( !d2.error ) {
+                                    $scope.area = d2.data;
+                                    $scope.area.price = parseFloat( $scope.area.price );
+                                    $scope.area.area_type = $scope.areatypes.find( at => at.id === $scope.area.area_type );
+                                    for( var i = 0; i < $scope.area.pools.length; i++ ) {
+                                        $scope.area.pools[i] = $scope.pools.find( p => p.id === $scope.area.pools[i] );
+                                    }
+                                } else {
+                                    $scope.errors = d2.message;
+                                }
+                            }).error( function( error ) {
+                                $scope.errors = error;
+                            });
+
                         } else {
-                            $scope.errors = d.message;
+                            $scope.errors = data.message;
                         }
+
                     }).error( function( error ) {
                         $scope.errors = error;
                     });
                 } else {
                     $scope.errors = data.message;
                 }
-
             }).error( function( error ) {
                 $scope.errors = error;
             });
 
             $scope.update = function() {
 
-                $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
+                $scope.area.area_type = $scope.area.area_type.id;
+                $scope.area.pools = $scope.area.pools.map( p => p.id );
 
-                if( CabinRepository.validateData( $scope.cabin, $scope ) ) {
-                    CabinRepository.update( $scope.cabin ).success( function( data ) {
+                if( AreaRepository.validateData( $scope.area, $scope ) ) {
+                    AreaRepository.update( $scope.area ).success( function( data ) {
                         if( !data.error ) {
-                            $scope.cabin = data.data;
-                            $location.path( '/cabins/detail/' + $scope.cabin.id );
+                            $scope.area = data.data;
+                            $scope.area.price = parseFloat( $scope.area.price );
+                            $location.path( '/areas/detail/' + $scope.area.id );
                         } else {
                             $scope.errors = data.message;
                         }
@@ -159,31 +188,36 @@ app
 
         } else {
 
-            allCabins();
-            allCabinTypes();
+            allAreas();
+            allAreaTypes();
+            allPools();
 
-            $scope.cabin = {
+            $scope.area = {
                 name : "",
                 description : "",
-                cabin_type : 0,
+                area_type : 0,
                 price : 0
             };
 
-            $scope.add = function() {
+            $scope.add = function() {
 
-                $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
+                $scope.area.area_type = $scope.area.area_type.id;
+                $scope.area.pools = $scope.area.pools.map( p => p.id );
 
-                if( CabinRepository.validateData( $scope.cabin, $scope ) ) {
-                    CabinRepository.add( $scope.cabin ).success( function( data ) {
-                        if( !data.error ) {
-                            $location.path( "/cabins" );
-                        } else {
+                if( AreaRepository.validateData( $scope.area, $scope ) ) {
+
+                    AreaRepository.add( $scope.area ).success( function( data ) {
+                        if( !data.error ){
+                            $location.path( "/areas" );
+                        } else {
                             $scope.errors = data.message;
                         }
                     }).error( function( error ) {
                         $scope.errors = error;
                     });
+
                 }
+
             };
 
             $scope.searchChange = function() {
@@ -199,14 +233,14 @@ app
                 .textContent("Después de borrar esto no podrá ser recuperado.")
                 .ariaLabel('Lucky day')
                 .targetEvent(e)
-                .ok('Borrar Cabaña')
+                .ok('Borrar Área')
                 .cancel('Cancelar');
 
             $mdDialog.show(confirm).then(function() {
-                CabinRepository.remove( id ).success( function( data ) {
+                AreaRepository.remove( id ).success( function( data ) {
                     if( !data.error ) {
-                        allCabins();
-                        $location.path( "/cabins" );
+                        allAreas();
+                        $location.path( "/areas" );
                     } else {
                         $scope.errors = data.message;
                     }

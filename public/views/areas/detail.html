@@ -1,7 +1,7 @@
-<div  ng-controller="cabin-controller">
+<div  ng-controller="area-controller">
 
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#/cabins"><i class="fa fa-bed" aria-hidden="true"></i> Cabañas</a></li>
+        <li class="breadcrumb-item"><a href="#/areas"><i class="fa fa-bed" aria-hidden="true"></i> Áreas</a></li>
         <li class="breadcrumb-item active"><i class="fa fa-asterisk" aria-hidden="true"></i> Detalle</li>
     </ol>
 
@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-6">
-            <h5 class="lead"> <i class="fa fa-asterisk" aria-hidden="true"></i> Detalle de cabaña</h5>
+            <h5 class="lead"> <i class="fa fa-asterisk" aria-hidden="true"></i> Detalle de área</h5>
         </div>
         <div class="col-md-5"></div>
     </div>
@@ -39,31 +39,27 @@
                         <tbody>
                             <tr>
                                 <th>Nombre</th>
-                                <td class="lead">{{cabin.name}}</td>
+                                <td class="lead">{{area.name}}</td>
                             </tr>
                             <tr>
                                 <th>Descripción</th>
-                                <td class="lead">{{cabin.description}}</td>
+                                <td class="lead">{{area.description}}</td>
                             </tr>
                             <tr>
                                 <th>Precio</th>
-                                <td class="lead">{{cabin.price}}</td>
+                                <td class="lead">{{area.price}}</td>
                             </tr>
                             <tr>
-                                <th>Tipo de Cabaña</th>
-                                <td class="lead">{{cabin.cabin_type.name}}</td>
-                            </tr>
-                            <tr>
-                                <th>Imagen</th>
-                                <td class="lead"><img src="{{cabin.img_url}}" class="rounded mx-auto d-block" alt="Responsive image"></td>
+                                <th>Tipo de Área</th>
+                                <td class="lead">{{area.area_type.name}}</td>
                             </tr>
                             <tr>
                                 <th>Creado</th>
-                                <td class="lead">{{cabin.timestamp | dateTimeFilter}}</td>
+                                <td class="lead">{{area.timestamp | dateTimeFilter}}</td>
                             </tr>
                             <tr>
                                 <th>Modificado</th>
-                                <td class="lead">{{cabin.updated | dateTimeFilter}}</td>
+                                <td class="lead">{{area.updated | dateTimeFilter}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -73,19 +69,19 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group text-sm-left">
-                                <a href="#/cabins">
+                                <a href="#/areas">
                                     <button type="button" class="btn btn-danger"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> Cancelar</button>
                                 </a>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group text-sm-center">
-                                <button type="button" ng-click="delete( $event, cabin.id )" class="btn btn-warning md-raised"><i class="fa fa-minus-circle" aria-hidden="true"></i> Borrar</button>
+                                <button type="button" ng-click="delete( $event, area.id )" class="btn btn-warning md-raised"><i class="fa fa-minus-circle" aria-hidden="true"></i> Borrar</button>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group text-sm-right">
-                                <a href="#/cabins/edit/{{cabin.id}}">
+                                <a href="#/areas/edit/{{area.id}}">
                                     <button type="submit" class="btn btn-info"><i class="fa fa-pencil-square" aria-hidden="true"></i> Editar</button>
                                 </a>
                             </div>

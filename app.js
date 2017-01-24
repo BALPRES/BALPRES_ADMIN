@@ -13,11 +13,10 @@ var areatype = require( './routes/area_types' );
 var cabintype = require( './routes/cabin_types' );
 var cabin = require( './routes/cabin' );
 var pool = require( './routes/pool' );
+var area = require( './routes/area' );
 
 var app = express();
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +30,7 @@ app.use( '/areatype', areatype );
 app.use( '/cabintype', cabintype );
 app.use( '/cabin', cabin );
 app.use( '/pool', pool );
+app.use( '/area', area );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
