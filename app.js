@@ -14,6 +14,7 @@ var cabintype = require( './routes/cabin_types' );
 var cabin = require( './routes/cabin' );
 var pool = require( './routes/pool' );
 var area = require( './routes/area' );
+var task = require( './routes/task' );
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use( '/cabintype', cabintype );
 app.use( '/cabin', cabin );
 app.use( '/pool', pool );
 app.use( '/area', area );
+app.use( '/task', task );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

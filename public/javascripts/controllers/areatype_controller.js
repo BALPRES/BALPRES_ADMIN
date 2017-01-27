@@ -60,103 +60,119 @@ app
             }
         });
     }])
-    .controller( 'areatype-controller', [ '$scope', '$rootScope', '$location', '$routeParams', '$mdDialog', 'AreaTypeRepository', function( $scope, $rootScope, $location, $routeParams, $mdDialog, AreaTypeRepository ) {
+    .controller( 'areatype-controller',
+                [   '$scope',
+                    '$rootScope',
+                    '$location',
+                    '$routeParams',
+                    '$mdDialog',
+                    'AreaTypeRepository',
+                    'AuthRepository',
+                    function(
+                        $scope,
+                        $rootScope,
+                        $location,
+                        $routeParams,
+                        $mdDialog, 
+                        AreaTypeRepository ) {
 
-        $scope.title = "Tipo de área";
+        if( AuthRepository.viewVerification() ) {
 
-        var allAreaTypes = function() {
-            AreaTypeRepository.getAll().success( function( data ) {
-                if (!data.error) {
-                    var the_data = data.data;
-                    $scope.areatypes = the_data.data;
-                } else {
-                    $scope.errors = data.message;
-                }
-            }).error( function( error ) {
-                console.log( error );
-            });
-        };
+            $scope.title = "Tipo de área";
 
-        if( $routeParams.id ) {
-
-            AreaTypeRepository.getById( $routeParams.id ).success( function( data ) {
-                if( !data.error ) {
-                    $scope.areatype = data.data;
-                } else {
-                    $scope.errors = data.message;
-                }
-            }).error( function( error ) {
-                $scope.errors = error;
-            });
-
-            $scope.update = function() {
-                if( AreaTypeRepository.validateData( $scope.areatype, $scope ) ) {
-                    AreaTypeRepository.update( $scope.areatype ).success( function( data ) {
-                        if( !data.error ) {
-                            $scope.areatype = data.data;
-                            $location.path( '/areatypes/detail/' + $scope.areatype.id );
-                        } else {
-                            $scope.errors = data.message;
-                        }
-                    }).error( function( error ) {
-                        $scope.errors = error;
-                    });
-                }
+            var allAreaTypes = function() {
+                AreaTypeRepository.getAll().success( function( data ) {
+                    if (!data.error) {
+                        var the_data = data.data;
+                        $scope.areatypes = the_data.data;
+                    } else {
+                        $scope.errors = data.message;
+                    }
+                }).error( function( error ) {
+                    console.log( error );
+                });
             };
 
-        } else {
+            if( $routeParams.id ) {
 
-            allAreaTypes();
+                AreaTypeRepository.getById( $routeParams.id ).success( function( data ) {
+                    if( !data.error ) {
+                        $scope.areatype = data.data;
+                    } else {
+                        $scope.errors = data.message;
+                    }
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
 
-            $scope.areatype = {
-                name : "",
-                description : "",
-                max_guests : 0
-            };
-            
-            $scope.add = function() {
+                $scope.update = function() {
+                    if( AreaTypeRepository.validateData( $scope.areatype, $scope ) ) {
+                        AreaTypeRepository.update( $scope.areatype ).success( function( data ) {
+                            if( !data.error ) {
+                                $scope.areatype = data.data;
+                                $location.path( '/areatypes/detail/' + $scope.areatype.id );
+                            } else {
+                                $scope.errors = data.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    }
+                };
 
-                if( AreaTypeRepository.validateData( $scope.areatype, $scope ) ) {
-                    AreaTypeRepository.add( $scope.areatype ).success( function( data ) {
+            } else {
+
+                allAreaTypes();
+
+                $scope.areatype = {
+                    name : "",
+                    description : "",
+                    max_guests : 0
+                };
+
+                $scope.add = function() {
+
+                    if( AreaTypeRepository.validateData( $scope.areatype, $scope ) ) {
+                        AreaTypeRepository.add( $scope.areatype ).success( function( data ) {
+                            if( !data.error ) {
+                                $location.path( "/areatypes" );
+                            } else {
+                                $scope.errors = data.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    }
+
+                };
+
+                $scope.searchChange = function() {
+                    console.log( $scope.search_text );
+                };
+            }
+
+            $scope.delete = function( e, id ){
+
+                var confirm = $mdDialog.confirm()
+                    .title('¿Desea borrar el registro?')
+                    .textContent("Después de borrar esto no podrá ser recuperado.")
+                    .ariaLabel('Lucky day')
+                    .targetEvent(e)
+                    .ok('Borrar Tipo de Área')
+                    .cancel('Cancelar');
+
+                $mdDialog.show(confirm).then(function() {
+                    AreaTypeRepository.remove( id ).success( function( data ) {
                         if( !data.error ) {
+                            allAreaTypes();
                             $location.path( "/areatypes" );
                         } else {
                             $scope.errors = data.message;
                         }
-                    }).error( function( error ) {
-                        $scope.errors = error;
+                    }).error( function(error) {
+                        $scope.errors =  "Ha habido un error.";
                     });
-                }
-
-            };
-
-            $scope.searchChange = function() {
-                console.log( $scope.search_text );
+                }, null );
             };
         }
-
-        $scope.delete = function( e, id ){
-
-            var confirm = $mdDialog.confirm()
-                .title('¿Desea borrar el registro?')
-                .textContent("Después de borrar esto no podrá ser recuperado.")
-                .ariaLabel('Lucky day')
-                .targetEvent(e)
-                .ok('Borrar Tipo de Área')
-                .cancel('Cancelar');
-
-            $mdDialog.show(confirm).then(function() {
-                AreaTypeRepository.remove( id ).success( function( data ) {
-                    if( !data.error ) {
-                        allAreaTypes();
-                        $location.path( "/areatypes" );
-                    } else {
-                        $scope.errors = data.message;
-                    }
-                }).error( function(error) {
-                    $scope.errors =  "Ha habido un error.";
-                });
-            }, null );
-        };
-
     }]);

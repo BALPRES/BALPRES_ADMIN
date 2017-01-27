@@ -58,7 +58,18 @@ app
             }
         });
     }])
-    .controller( 'dummy-controller', [ '$scope', '$rootScope', '$location', 'DummyRepository', 'AuthRepository', function( $scope, $rootScope, $location, DummyRepository, AuthRepository ) {
+    .controller( 'dummy-controller',
+                [   '$scope',
+                    '$rootScope',
+                    '$location',
+                    'DummyRepository',
+                    'AuthRepository',
+                    function(
+                        $scope,
+                        $rootScope,
+                        $location,
+                        DummyRepository,
+                        AuthRepository ) {
 
         if( AuthRepository.viewVerification() ) {
 

@@ -66,106 +66,124 @@ app
             }
         });
     }])
-    .controller( 'pool-controller', [ '$scope', '$rootScope', '$location', '$routeParams', '$mdDialog', 'PoolRepository', function( $scope, $rootScope, $location, $routeParams, $mdDialog, PoolRepository ) {
+    .controller( 'pool-controller',
+                [   '$scope',
+                    '$rootScope',
+                    '$location',
+                    '$routeParams',
+                    '$mdDialog',
+                    'PoolRepository',
+                    'AuthRepository',
+                    function(
+                        $scope,
+                        $rootScope,
+                        $location,
+                        $routeParams,
+                        $mdDialog,
+                        PoolRepository,
+                        AuthRepository ) {
 
-        $scope.title = "Albercas";
+        if( AuthRepository.viewVerification() ) {
 
-        var allPools = function() {
-            PoolRepository.getAll().success( function( data ) {
-                if (!data.error) {
-                    var the_data = data.data;
-                    $scope.pools = the_data.data;
-                } else {
-                    $scope.errors = data.message;
-                }
-            }).error( function( error ) {
-                $scope.errors = error;
-            });
-        };
+            $scope.title = "Albercas";
 
-        if( $routeParams.id ) {
-
-            PoolRepository.getById( $routeParams.id ).success( function( data ) {
-                if( !data.error ) {
-                    $scope.pool = data.data;
-                    $scope.pool.price = parseFloat( $scope.pool.price );
-                    $scope.pool.max_people = parseInt( $scope.pool.max_people );
-                } else {
-                    $scope.errors = ddata.message;
-                }
-            }).error( function( error ) {
-                $scope.errors = error;
-            });
-
-            $scope.update = function() {
-
-                if( PoolRepository.validateData( $scope.pool, $scope ) ) {
-                    PoolRepository.update( $scope.pool ).success( function( data ) {
-                        if( !data.error ) {
-                            $scope.pool = data.data;
-                            $location.path( '/pools/detail/' + $scope.pool.id );
-                        } else {
-                            $scope.errors = data.message;
-                        }
-                    }).error( function( error ) {
-                        $scope.errors = error;
-                    });
-                }
+            var allPools = function() {
+                PoolRepository.getAll().success( function( data ) {
+                    if (!data.error) {
+                        var the_data = data.data;
+                        $scope.pools = the_data.data;
+                    } else {
+                        $scope.errors = data.message;
+                    }
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
             };
 
-        } else {
+            if( $routeParams.id ) {
 
-            allPools();
+                PoolRepository.getById( $routeParams.id ).success( function( data ) {
+                    if( !data.error ) {
+                        $scope.pool = data.data;
+                        $scope.pool.price = parseFloat( $scope.pool.price );
+                        $scope.pool.max_people = parseInt( $scope.pool.max_people );
+                    } else {
+                        $scope.errors = ddata.message;
+                    }
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
 
-            $scope.pool = {
-                name : "",
-                description : "",
-                price : 0,
-                max_people : 0
-            };
+                $scope.update = function() {
 
-            $scope.add = function() {
+                    if( PoolRepository.validateData( $scope.pool, $scope ) ) {
+                        PoolRepository.update( $scope.pool ).success( function( data ) {
+                            if( !data.error ) {
+                                $scope.pool = data.data;
+                                $location.path( '/pools/detail/' + $scope.pool.id );
+                            } else {
+                                $scope.errors = data.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    }
+                };
 
-                if( PoolRepository.validateData( $scope.pool, $scope ) ) {
-                    PoolRepository.add( $scope.pool ).success( function( data ) {
+            } else {
+
+                allPools();
+
+                $scope.pool = {
+                    name : "",
+                    description : "",
+                    price : 0,
+                    max_people : 0
+                };
+
+                $scope.add = function() {
+
+                    if( PoolRepository.validateData( $scope.pool, $scope ) ) {
+                        PoolRepository.add( $scope.pool ).success( function( data ) {
+                            if( !data.error ) {
+                                $location.path( "/pools" );
+                            } else {
+                                $scope.errors = data.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    }
+                };
+
+                $scope.searchChange = function() {
+                    console.log( $scope.search_text );
+                };
+            }
+
+            $scope.delete = function( e, id ){
+
+                var confirm = $mdDialog.confirm()
+                    .title('¿Desea borrar el registro?')
+                    .textContent("Después de borrar esto no podrá ser recuperado.")
+                    .ariaLabel('Lucky day')
+                    .targetEvent(e)
+                    .ok('Borrar Alberca')
+                    .cancel('Cancelar');
+
+                $mdDialog.show(confirm).then(function() {
+                    CabinRepository.remove( id ).success( function( data ) {
                         if( !data.error ) {
+                            allCabins();
                             $location.path( "/pools" );
                         } else {
                             $scope.errors = data.message;
                         }
-                    }).error( function( error ) {
-                        $scope.errors = error;
+                    }).error( function(error) {
+                        $scope.errors =  "Ha habido un error.";
                     });
-                }
-            };
-
-            $scope.searchChange = function() {
-                console.log( $scope.search_text );
+                }, null );
             };
         }
-
-        $scope.delete = function( e, id ){
-
-            var confirm = $mdDialog.confirm()
-                .title('¿Desea borrar el registro?')
-                .textContent("Después de borrar esto no podrá ser recuperado.")
-                .ariaLabel('Lucky day')
-                .targetEvent(e)
-                .ok('Borrar Alberca')
-                .cancel('Cancelar');
-
-            $mdDialog.show(confirm).then(function() {
-                CabinRepository.remove( id ).success( function( data ) {
-                    if( !data.error ) {
-                        allCabins();
-                        $location.path( "/pools" );
-                    } else {
-                        $scope.errors = data.message;
-                    }
-                }).error( function(error) {
-                    $scope.errors =  "Ha habido un error.";
-                });
-            }, null );
-        };
 
     }]);

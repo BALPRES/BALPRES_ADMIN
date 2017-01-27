@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require( 'express' );
 var bodyParser = require( 'body-parser' );
 var urlLib = require( 'url' );
@@ -8,64 +10,84 @@ var router = express.Router();
 var jsonParser = bodyParser.json();
 
 /**
-* login function, requires username and password
+* task list pettition
 **/
-router.post( '/login', jsonParser, function( req, res ) {
+router.get( '/', jsonParser, function( req, res ) {
 
-    var form_data = req.body;
-    var en_data = encryption_system.encryptJSON( form_data );
+    var userdata = JSON.parse( req.cookies[ 'userdata' ] );
 
     request(
         {
-            url : http_helper.get_api_uri( 'login/', '' ),
-            method : 'POST',
+            url : http_helper.get_api_uri( 'task/', '' ),
+            method : 'GET',
             json : true,
-            body : en_data,
             headers : {
-                'Authorization' : http_helper.get_basic_auth_app_header()
+                'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
         function( error, response, body ) {
+            if( response ) {
+                switch (response.statusCode) {
+                    case 200:
+                        var data_from_server = encryption_system.decryptLongJSON( body );
+                        var jsonData = JSON.stringify({
+                            error : false,
+                            data : data_from_server
+                        });
+                        res.send( jsonData );
+                        break;
+                    default:
+                        var data_from_server = encryption_system.decryptLongJSON( body );
+                        var jsonData = JSON.stringify({
+                            error : true,
+                            message : data_from_server
+                        });
+                        res.send( jsonData );
+                        break;
+                }
+            }
+        }
+    );
+});
+
+/**
+* task create pettition
+**/
+router.post( '/', jsonParser, function( req, res ) {
+
+    var userdata = JSON.parse( req.cookies[ 'userdata' ] );
+    var form_data = req.body;
+
+    request(
+        {
+            url : http_helper.get_api_uri( 'task/', '' ),
+            method : 'POST',
+            json : true,
+            body : encryption_system.encryptLongJSON( form_data ),
+            headers : {
+                'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
+            }
+        },
+        function( error, response, body ){
             switch (response.statusCode) {
-                case  400:
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : "There was a BE connection error."
-                    });
-                    res.send( jsonData );
-                    break;
-                case 403:
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : "There was an application error."
-                    });
-                    res.send( jsonData );
-                    break;
-                case 401 :
-                    var data_from_server = encryption_system.decryptJSON( body );
+                case 400 :
+                    var data_from_server = encryption_system.decryptLongJSON( body );
                     var jsonData = JSON.stringify({
                         error : true,
                         message : data_from_server.message
                     });
                     res.send( jsonData );
                     break;
-                case 200 :
-                    var data_from_server = encryption_system.decryptJSON( body );
+                case 201 :
+                    var data_from_server = encryption_system.decryptLongJSON( body );
                     var jsonData = JSON.stringify({
                         error : false,
-                        message : data_from_server.message
+                        data : data_from_server.data
                     });
-                    var user_data = JSON.stringify({
-                        username : form_data.username,
-                        rol : data_from_server.data,
-                        auth_data : encryption_system.encryptCookie( http_helper.get_user_basic_auth( form_data.username, form_data.password ) )
-                    });
-                    res.cookie( 'userdata', user_data )
                     res.send( jsonData );
                     break;
                 default :
-                    res.send( "O_o" );
-                    console.log( body );
+                    res.send( "Well 500 :(" );
                     break;
             }
         }
@@ -73,27 +95,15 @@ router.post( '/login', jsonParser, function( req, res ) {
 });
 
 /**
-* logout function, this destroys the user cookie with the token and shit
+* get assigned tasks
 **/
-router.post( '/logout', jsonParser, function( req, res ) {
-    try {
-        res.clearCookie( 'userdata' );
-        res.send( 204 );
-    } catch( err ) {
-        res.send( err );
-    }
-});
-
-/**
-* user catalog
-**/
-router.get( '/usercat', jsonParser, function( req, res ) {
+router.get( '/assigned/', jsonParser, function( req, res ) {
 
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
 
     request(
         {
-            url : http_helper.get_api_uri( 'usercat/', '' ),
+            url : http_helper.get_api_uri( 'task/assigned/', '' ),
             method : 'GET',
             json : true,
             headers : {

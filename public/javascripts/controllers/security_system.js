@@ -1,7 +1,6 @@
 app
     .factory( 'AuthRepository', [ '$http', '$cookies', '$location', '$rootScope', function( $http, $cookies, $location, $rootScope ) {
         return {
-            // validateLogin : validates the username password on the api
             login : function( username, password ) {
                 var jsonData = JSON.stringify({
                     username : username,
@@ -19,17 +18,14 @@ app
                     url : 'auth/logout'
                 });
             },
-            // isSessionSet : returns if the session is set on the cookies
             isSessionSet : function() {
                 var userCookie = $cookies.get('userdata');
                 return ( userCookie == undefined ) ? false : true;
             },
-            // getSession : returns the cookie session
             getSession : function() {
                 var userCookie = $cookies.get('userdata');
                 return ( userCookie == undefined ) ? undefined : JSON.parse(userCookie);
             },
-            // removeSession : removes the session from the cookies
             removeSession : function() {
                 $cookies.remove( 'userdata' );
             },
@@ -55,6 +51,12 @@ app
                     return true;
                 }
 
+            },
+            getUserCat : function() {
+                return $http({
+                    url : 'auth/usercat/',
+                    method : 'GET'
+                });
             },
             setMenu : function() {
                 $rootScope.snd_menu_items = {

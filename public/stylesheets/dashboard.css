@@ -68,3 +68,16 @@ h1 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+
+.custom-nav {
+    background-color: #204356;
+}
+
+.thead-custom-green {
+    background-color: #5cb85c;
+    color : white;
+}
+.thead-custom-red {
+    background-color: #d9534f;
+    color : white;
+}

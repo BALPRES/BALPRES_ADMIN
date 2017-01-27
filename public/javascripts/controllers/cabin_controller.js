@@ -74,6 +74,7 @@ app
                     '$mdDialog',
                     'CabinRepository',
                     'CabinTypeRepository',
+                    'AuthRepository',
                     function(
                         $scope,
                         $rootScope,
@@ -81,139 +82,143 @@ app
                         $routeParams,
                         $mdDialog,
                         CabinRepository,
-                        CabinTypeRepository ) {
+                        CabinTypeRepository,
+                        AuthRepository ) {
 
-        $scope.title = "Cabañas";
+        if( AuthRepository.viewVerification() ) {
 
-        var allCabins = function() {
-            CabinRepository.getAll().success( function( data ) {
-                if (!data.error) {
-                    var the_data = data.data;
-                    $scope.cabins = the_data.data;
-                } else {
-                    $scope.errors = data.message;
-                }
-            }).error( function( error ) {
-                $scope.errors = error;
-            });
-        };
+            $scope.title = "Cabañas";
 
-        var allCabinTypes = function() {
-            CabinTypeRepository.getAll().success( function( data ) {
-                if (!data.error) {
-                    var the_data = data.data;
-                    $scope.cabintypes = the_data.data;
-                } else {
-                    $scope.errors = data.message;
-                }
-            }).error( function( error ) {
-                $scope.errors = error;
-            });
-        };
-
-        if( $routeParams.id ) {
-
-            CabinTypeRepository.getAll().success( function( data ) {
-
-                if( !data.error ) {
-
-                    var the_data = data.data;
-                    $scope.cabintypes = the_data.data;
-
-                    CabinRepository.getById( $routeParams.id ).success( function( d ) {
-                        if( !d.error ) {
-                            $scope.cabin = d.data;
-                            $scope.cabin.price = parseFloat( $scope.cabin.price );
-                            $scope.cabin.cabin_type = $scope.cabintypes.find( ct => ct.id == $scope.cabin.cabin_type );
-                        } else {
-                            $scope.errors = d.message;
-                        }
-                    }).error( function( error ) {
-                        $scope.errors = error;
-                    });
-                } else {
-                    $scope.errors = data.message;
-                }
-
-            }).error( function( error ) {
-                $scope.errors = error;
-            });
-
-            $scope.update = function() {
-
-                $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
-
-                if( CabinRepository.validateData( $scope.cabin, $scope ) ) {
-                    CabinRepository.update( $scope.cabin ).success( function( data ) {
-                        if( !data.error ) {
-                            $scope.cabin = data.data;
-                            $location.path( '/cabins/detail/' + $scope.cabin.id );
-                        } else {
-                            $scope.errors = data.message;
-                        }
-                    }).error( function( error ) {
-                        $scope.errors = error;
-                    });
-                }
+            var allCabins = function() {
+                CabinRepository.getAll().success( function( data ) {
+                    if (!data.error) {
+                        var the_data = data.data;
+                        $scope.cabins = the_data.data;
+                    } else {
+                        $scope.errors = data.message;
+                    }
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
             };
 
-        } else {
-
-            allCabins();
-            allCabinTypes();
-
-            $scope.cabin = {
-                name : "",
-                description : "",
-                cabin_type : 0,
-                price : 0
+            var allCabinTypes = function() {
+                CabinTypeRepository.getAll().success( function( data ) {
+                    if (!data.error) {
+                        var the_data = data.data;
+                        $scope.cabintypes = the_data.data;
+                    } else {
+                        $scope.errors = data.message;
+                    }
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
             };
 
-            $scope.add = function() {
+            if( $routeParams.id ) {
 
-                $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
+                CabinTypeRepository.getAll().success( function( data ) {
 
-                if( CabinRepository.validateData( $scope.cabin, $scope ) ) {
-                    CabinRepository.add( $scope.cabin ).success( function( data ) {
+                    if( !data.error ) {
+
+                        var the_data = data.data;
+                        $scope.cabintypes = the_data.data;
+
+                        CabinRepository.getById( $routeParams.id ).success( function( d ) {
+                            if( !d.error ) {
+                                $scope.cabin = d.data;
+                                $scope.cabin.price = parseFloat( $scope.cabin.price );
+                                $scope.cabin.cabin_type = $scope.cabintypes.find( ct => ct.id == $scope.cabin.cabin_type );
+                            } else {
+                                $scope.errors = d.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    } else {
+                        $scope.errors = data.message;
+                    }
+
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
+
+                $scope.update = function() {
+
+                    $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
+
+                    if( CabinRepository.validateData( $scope.cabin, $scope ) ) {
+                        CabinRepository.update( $scope.cabin ).success( function( data ) {
+                            if( !data.error ) {
+                                $scope.cabin = data.data;
+                                $location.path( '/cabins/detail/' + $scope.cabin.id );
+                            } else {
+                                $scope.errors = data.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    }
+                };
+
+            } else {
+
+                allCabins();
+                allCabinTypes();
+
+                $scope.cabin = {
+                    name : "",
+                    description : "",
+                    cabin_type : 0,
+                    price : 0
+                };
+
+                $scope.add = function() {
+
+                    $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
+
+                    if( CabinRepository.validateData( $scope.cabin, $scope ) ) {
+                        CabinRepository.add( $scope.cabin ).success( function( data ) {
+                            if( !data.error ) {
+                                $scope.cabin = data.data;
+                                $scope.cabin.price = parseFloat( $scope.cabin.price );
+                            } else {
+                                $scope.errors = data.message;
+                            }
+                        }).error( function( error ) {
+                            $scope.errors = error;
+                        });
+                    }
+                };
+
+                $scope.searchChange = function() {
+                    console.log( $scope.search_text );
+                };
+
+            }
+
+            $scope.delete = function( e, id ){
+
+                var confirm = $mdDialog.confirm()
+                    .title('¿Desea borrar el registro?')
+                    .textContent("Después de borrar esto no podrá ser recuperado.")
+                    .ariaLabel('Lucky day')
+                    .targetEvent(e)
+                    .ok('Borrar Cabaña')
+                    .cancel('Cancelar');
+
+                $mdDialog.show(confirm).then(function() {
+                    CabinRepository.remove( id ).success( function( data ) {
                         if( !data.error ) {
+                            allCabins();
                             $location.path( "/cabins" );
                         } else {
                             $scope.errors = data.message;
                         }
-                    }).error( function( error ) {
-                        $scope.errors = error;
+                    }).error( function(error) {
+                        $scope.errors =  "Ha habido un error.";
                     });
-                }
+                }, null );
             };
-
-            $scope.searchChange = function() {
-                console.log( $scope.search_text );
-            };
-
         }
-
-        $scope.delete = function( e, id ){
-
-            var confirm = $mdDialog.confirm()
-                .title('¿Desea borrar el registro?')
-                .textContent("Después de borrar esto no podrá ser recuperado.")
-                .ariaLabel('Lucky day')
-                .targetEvent(e)
-                .ok('Borrar Cabaña')
-                .cancel('Cancelar');
-
-            $mdDialog.show(confirm).then(function() {
-                CabinRepository.remove( id ).success( function( data ) {
-                    if( !data.error ) {
-                        allCabins();
-                        $location.path( "/cabins" );
-                    } else {
-                        $scope.errors = data.message;
-                    }
-                }).error( function(error) {
-                    $scope.errors =  "Ha habido un error.";
-                });
-            }, null );
-        };
-
     }]);

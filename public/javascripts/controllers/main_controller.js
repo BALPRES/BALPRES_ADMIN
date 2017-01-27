@@ -1,4 +1,4 @@
-var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial' ] )
+var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial'  ] )
     .run( [ '$rootScope', '$location', 'AuthRepository', function( $rootScope, $location, AuthRepository ) {
         $rootScope.isLoggedIn = {
             show_app : true,
@@ -33,6 +33,9 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             })
             .when( '/areas', {
                 templateUrl : '../views/areas/list.html'
+            })
+            .when( '/tasks_super_admin', {
+                templateUrl : '../views/tasks/list_sa.html'
             })
             // area types
             .when( '/areatypes/edit/:id', {
