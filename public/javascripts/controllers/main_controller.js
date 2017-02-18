@@ -1,4 +1,4 @@
-var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial'  ] )
+var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial', 'ng-fusioncharts', 'ui.router', 'ui.calendar', 'ui.bootstrap' ] )
     .run( [ '$rootScope', '$location', 'AuthRepository', function( $rootScope, $location, AuthRepository ) {
         $rootScope.isLoggedIn = {
             show_app : true,
@@ -24,7 +24,6 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             .when( '/dummy', {
                 templateUrl : '../views/dummy.html'
             })
-            // Albercas
             .when( '/pools', {
                 templateUrl : '../views/pools/list.html'
             })
@@ -36,6 +35,15 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             })
             .when( '/tasks_super_admin', {
                 templateUrl : '../views/tasks/list_sa.html'
+            })
+            .when( '/reservationtypes', {
+                templateUrl : '../views/reservationtypes/list.html'
+            })
+            .when( '/paymentstatus', {
+                templateUrl : '../views/paymentstatus/list.html'
+            })
+            .when( '/promotions', {
+                templateUrl : '../views/promotions/list.html'
             })
             // area types
             .when( '/areatypes/edit/:id', {
@@ -96,6 +104,59 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             .when( '/areas/new/', {
                 templateUrl : '../views/areas/new.html'
             })
+            // reservationtypes
+            .when( '/reservationtypes/edit/:id', {
+                templateUrl : '../views/reservationtypes/edit.html'
+            })
+            .when( '/reservationtypes/detail/:id', {
+                templateUrl : '../views/reservationtypes/detail.html'
+            })
+            .when( '/reservationtypes/new/', {
+                templateUrl : '../views/reservationtypes/new.html'
+            })
+            // reservations
+            .when( '/reservations/', {
+                templateUrl : '../views/reservations/pos.html'
+            })
+            .when( '/reservations/cabin/new', {
+                templateUrl : '../views/reservations/new_cabin.html'
+            })
+            .when( '/reservations/cabin/detail/:id', {
+                templateUrl : '../views/reservations/detail_cabin.html'
+            })
+            .when( '/reservations/cabin/', {
+                templateUrl : '../views/reservations/reservation_cabin.html'
+            })
+            .when( '/reservations/area/', {
+                templateUrl : '../views/reservations/reservation_area.html'
+            })
+            .when( '/reservations/pool/', {
+                templateUrl : '../views/reservations/reservation_pool.html'
+            })
+            // Payment status
+            .when( '/paymentstatus/edit/:id', {
+                templateUrl : '../views/paymentstatus/edit.html'
+            })
+            .when( '/paymentstatus/detail/:id', {
+                templateUrl : '../views/paymentstatus/detail.html'
+            })
+            .when( '/paymentstatus/new/', {
+                templateUrl : '../views/paymentstatus/new.html'
+            })
+            // Promotion status
+            .when( '/promotions/edit/:id', {
+                templateUrl : '../views/promotions/edit.html'
+            })
+            .when( '/promotions/detail/:id', {
+                templateUrl : '../views/promotions/detail.html'
+            })
+            .when( '/promotions/new/', {
+                templateUrl : '../views/promotions/new.html'
+            })
+            // general
+            .when( '/settings/', {
+                templateUrl : '../views/general/settings.html'
+            })
             .otherwise({
                 redirectTo : '/404'
             });
@@ -109,7 +170,7 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
                 AuthRepository.viewVerification();
                 AuthRepository.setMenu();
             }).error( function( error ) {
-                console.log( "There was an error" );
+                $scope.errors = error;
             });
         };
 
@@ -125,37 +186,37 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
         return function( date ) {
             var d = new Date( date );
             var month = new Array();
-            month[0] = "January";
-            month[1] = "February";
-            month[2] = "March";
-            month[3] = "April";
-            month[4] = "May";
-            month[5] = "June";
-            month[6] = "July";
-            month[7] = "August";
-            month[8] = "September";
-            month[9] = "October";
-            month[10] = "November";
-            month[11] = "December";
-            return "Date : " + d.getDate() + " " + month[d.getMonth()] + " " + d.getFullYear() + " Time : " + (d.getHours() < 10 ? ("0"+d.getHours()) : d.getHours() ) + ":" + (d.getMinutes()<10?("0"+d.getMinutes()):d.getMinutes());
+            month[0] = "Enero";
+            month[1] = "Febrero";
+            month[2] = "Marzo";
+            month[3] = "Abril";
+            month[4] = "Mayo";
+            month[5] = "Junio";
+            month[6] = "Julio";
+            month[7] = "Agosto";
+            month[8] = "Septiembre";
+            month[9] = "Octubre";
+            month[10] = "Noviembre";
+            month[11] = "Diciembre";
+            return d.getDate() + " " + month[d.getMonth()] + " " + d.getFullYear() + " " + ( d.getHours() < 10 ? ("0"+d.getHours()) : d.getHours() ) + ":" + (d.getMinutes()<10?("0"+d.getMinutes()):d.getMinutes());
         };
     })
     .filter( 'dateFilter', function() {
         return function( date ) {
             var d = new Date( date );
             var month = new Array();
-            month[0] = "January";
-            month[1] = "February";
-            month[2] = "March";
-            month[3] = "April";
-            month[4] = "May";
-            month[5] = "June";
-            month[6] = "July";
-            month[7] = "August";
-            month[8] = "September";
-            month[9] = "October";
-            month[10] = "November";
-            month[11] = "December";
-            return d.getDate() + " " + month[d.getMonth()] + " " + d.getFullYear();
+            month[0] = "Enero";
+            month[1] = "Febrero";
+            month[2] = "Marzo";
+            month[3] = "Abril";
+            month[4] = "Mayo";
+            month[5] = "Junio";
+            month[6] = "Julio";
+            month[7] = "Agosto";
+            month[8] = "Septiembre";
+            month[9] = "Octubre";
+            month[10] = "Noviembre";
+            month[11] = "Diciembre";
+            return ( d.getDate() + 1 ) + " " + month[d.getMonth()] + " " + d.getFullYear();
         };
     });

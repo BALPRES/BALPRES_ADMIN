@@ -70,14 +70,6 @@ router.post( '/', jsonParser, function( req, res ) {
         },
         function( error, response, body ){
             switch (response.statusCode) {
-                case 400 :
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server.message
-                    });
-                    res.send( jsonData );
-                    break;
                 case 201 :
                     var data_from_server = encryption_system.decryptLongJSON( body );
                     var jsonData = JSON.stringify({
@@ -87,7 +79,12 @@ router.post( '/', jsonParser, function( req, res ) {
                     res.send( jsonData );
                     break;
                 default :
-                    res.send( "Well 500 :(" );
+                    var data_from_server = encryption_system.decryptLongJSON( body );
+                    var jsonData = JSON.stringify({
+                        error : true,
+                        message : data_from_server.message
+                    });
+                    res.send( jsonData );
                     break;
             }
         }
@@ -98,8 +95,10 @@ router.post( '/', jsonParser, function( req, res ) {
 * cabin retrieve pettition
 **/
 router.get( '/:id', jsonParser, function( req, res ) {
+
     var id = req.params.id;
     var userdata = JSON.parse( req.cookies['userdata'] );
+
     request(
         {
             url : http_helper.get_api_uri( 'cabin/detail/', id ),
@@ -119,17 +118,13 @@ router.get( '/:id', jsonParser, function( req, res ) {
                     });
                     res.send( jsonData );
                     break;
-                case 400:
+                default:
                     var data_from_server = encryption_system.decryptLongJSON( body );
                     var jsonData = JSON.stringify({
                         error : true,
                         message : data_from_server.message
                     });
                     res.send( jsonData );
-                    break;
-                default:
-                    console.log( error );
-                    res.send( "This is response" );
                     break;
             }
         }
@@ -165,17 +160,13 @@ router.put( '/:id', jsonParser, function( req, res ) {
                     });
                     res.send( jsonData );
                     break;
-                case 400:
+                default:
                     var data_from_server = encryption_system.decryptLongJSON( body );
                     var jsonData = JSON.stringify({
                         error : true,
                         data : data_from_server.message
                     });
                     res.send( jsonData );
-                    break;
-                default :
-                    console.log( error );
-                    res.send( "This is response" );
                     break;
             }
         }
@@ -200,7 +191,6 @@ router.delete( '/:id', jsonParser, function( req, res ) {
             }
         },
         function( error, response, body ) {
-
             switch (response.statusCode) {
                 case 204:
                     var jsonData = JSON.stringify({
@@ -209,7 +199,7 @@ router.delete( '/:id', jsonParser, function( req, res ) {
                     });
                     res.send( jsonData );
                     break;
-                case 400:
+                default:
                     var data_from_server = encryption_system.decryptLongJSON( body );
                     var jsonData = JSON.stringify({
                         error : true,
@@ -217,14 +207,9 @@ router.delete( '/:id', jsonParser, function( req, res ) {
                     });
                     res.send( jsonData );
                     break;
-                default:
-                    console.log( error );
-                    res.send( "There was an error" );
-                    break;
             }
         }
     );
-
 });
 
 module.exports = router;

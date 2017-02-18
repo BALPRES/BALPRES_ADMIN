@@ -1,0 +1,374 @@
+<div  ng-controller="settings-controller">
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><i class="fa fa-gears" aria-hidden="true"></i> Ajustes</li>
+    </ol>
+
+    <h2 class="display-3">{{title}}</h2>
+
+    <br/>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            <h5 class="lead"> <i class="fa fa-gears" aria-hidden="true"></i> Configuración</h5>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <h3>Numeros de Alerta</h3>
+
+            <hr>
+
+            <table class="table table-bordered table-hover">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>No. Teléfono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_contact_1_name"
+                                    ng-model="alert_contact_1_name"
+                                    placeholder="Contacto de alerta 1">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_contact_1_phone"
+                                    ng-model="alert_contact_1_phone"
+                                    placeholder="Teléfono">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_contact_2_name"
+                                    ng-model="alert_contact_2_name"
+                                    placeholder="Contacto de alerta 2">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_contact_2_phone"
+                                    ng-model="alert_contact_2_phone"
+                                    placeholder="Teléfono">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_contact_3_name"
+                                    ng-model="alert_contact_3_name"
+                                    placeholder="Contacto de alerta 3">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_contact_3_phone"
+                                    ng-model="alert_contact_3_phone"
+                                    placeholder="Teléfono">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <button
+                        class="btn btn-danger"
+                        type="button"
+                        name="button">Cancelar</button>
+                    <button
+                        class="btn btn-success pull-right"
+                        type="button"
+                        name="button"
+                        ng-click="save_no_alerts()">Guardar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <h3>Correos de Alerta</h3>
+
+            <hr>
+
+            <table class="table table-bordered table-hover">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_email_1_name"
+                                    ng-model="alert_email_1_name"
+                                    placeholder="Contacto de alerta 1">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_email_1_email"
+                                    ng-model="alert_email_1_email"
+                                    placeholder="Teléfono">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_email_2_name"
+                                    ng-model="alert_email_2_name"
+                                    placeholder="Contacto de alerta 2">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_email_2_email"
+                                    ng-model="alert_email_2_email"
+                                    placeholder="Teléfono">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_email_3_name"
+                                    ng-model="alert_email_3_name"
+                                    placeholder="Contacto de alerta 3">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="alert_email_3_email"
+                                    ng-model="alert_email_3_email"
+                                    placeholder="Teléfono">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <button
+                        class="btn btn-danger"
+                        type="button"
+                        name="button">Cancelar</button>
+                    <button
+                        class="btn btn-success pull-right"
+                        type="button"
+                        name="button"
+                        ng-click="save_emails_alert()">Guardar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <h3>Correo de Contacto</h3>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="contact_name"
+                            ng-model="contact_name"
+                            placeholder="Nombre Contacto">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="contact_email"
+                            ng-model="contact_email"
+                            placeholder="Correo Contacto">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"> </div>
+                <div class="col-md-6">
+                    <button
+                        class="btn btn-danger"
+                        type="button"
+                        name="button">Cancelar</button>
+                    <button
+                        class="btn btn-success pull-right"
+                        type="button"
+                        name="button"
+                        ng-click="save_email_contact()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <h3>Precios de Boletos</h3>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ticket_price_child">Boleto de Niño</label>
+                        <input
+                            class="form-control"
+                            type="number"
+                            name="ticket_price_child"
+                            ng-model="ticket_price_child"
+                            placeholder="Precio Niño">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ticket_price_adult">Boleto de Adulto</label>
+                        <input
+                            class="form-control"
+                            type="number"
+                            name="ticket_price_adult"
+                            ng-model="ticket_price_adult"
+                            placeholder="Precio Adulto">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <button
+                        class="btn btn-danger"
+                        type="button"
+                        name="button">Cancelar</button>
+                    <button
+                        class="btn btn-success pull-right"
+                        type="button"
+                        name="button"
+                        ng-click="save_ticket_prices()">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Firma de Recibos</h3>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="signature_name">Nombre</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="signature_name"
+                            ng-model="signature_name"
+                            placeholder="Nombre">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="signature_file">Firma</label>
+                        <input
+                            class="form-control"
+                            type="file"
+                            name="signature_file"
+                            ng-model="signature_file"
+                            placeholder="Firma">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <button
+                        class="btn btn-danger"
+                        type="button"
+                        name="button">Cancelar</button>
+                    <button
+                        class="btn btn-success pull-right"
+                        type="button"
+                        name="button"
+                        ng-click="save_signature()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+</div>

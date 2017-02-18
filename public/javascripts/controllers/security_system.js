@@ -111,7 +111,7 @@ app
                             name : 'Punto de venta',
                             icon : 'fa fa-credit-card',
                             status : '',
-                            link : '#/pos'
+                            link : '#/reservations'
                         },
                         sales : {
                             name : 'Ventas',
@@ -139,11 +139,29 @@ app
                             status : '',
                             link : '#/cabintypes'
                         },
+                        reservationtypes : {
+                            name : 'Tipos de Reservación',
+                            icon : 'fa fa-list-alt',
+                            status : '',
+                            link : '#/reservationtypes'
+                        },
+                        paymentstatus : {
+                            name : 'Estatus de Pagos',
+                            icon : 'fa fa-list-alt',
+                            status : '',
+                            link : '#/paymentstatus'
+                        },
                         contents : {
                             name : 'Contenidos',
                             icon : 'fa fa-align-left',
                             status : '',
                             link : '#/contents'
+                        },
+                        promotions : {
+                            name : 'Promociones',
+                            icon : 'fa fa-align-left',
+                            status : '',
+                            link : '#/promotions'
                         },
                         site : {
                             name : 'Sitio',
@@ -167,6 +185,8 @@ app
                             delete $rootScope.snd_menu_items.general.tasks_general;
                             delete $rootScope.snd_menu_items.settings.areatypes;
                             delete $rootScope.snd_menu_items.settings.cabintypes;
+                            delete $rootScope.snd_menu_items.settings.paymentstatus;
+                            delete $rootScope.snd_menu_items.settings.reservationtypes;
                             break;
                         case 3:
                             delete $rootScope.snd_menu_items.general.tasks_super_admin;

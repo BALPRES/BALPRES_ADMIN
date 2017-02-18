@@ -25,26 +25,26 @@
 
     <div ng-if="cabins">
         <table class="table table-bordered table-hover">
-        <thead class="thead-inverse">
-            <tr>
-                <th style="width:15%"><i class="fa fa-asterisk" aria-hidden="true"></i>  Nombre</th>
-                <th><i class="fa fa-indent" aria-hidden="true"></i> Descripción</th>
-                <th style="width:15%"><i class="fa fa-cube" aria-hidden="true"></i> Tipo de Cabaña</th>
-                <th style="width:15%"><i class="fa fa-money" aria-hidden="true"></i> Precio</th>
-                <th class="text-sm-center"><i class="fa fa-pencil" aria-hidden="true"></i></th>
-                <th class="text-sm-center"><i class="fa fa-trash" aria-hidden="true"></i></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="c in cabins">
-                <td><a href="#/cabins/detail/{{c.id}}"><p class="lead">{{c.name}}</p></td>
-                <td><p class="lead">{{c.description}}</p></td>
-                <td><p class="lead">{{c.cabin_type}}</p></td>
-                <td><p class="lead">{{c.price}}</p></td>
-                <td><a href="#/cabins/edit/{{c.id}}"><button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil-square" aria-hidden="true"></i> Editar</button></a></td>
-                <td><button type="button" ng-click="delete( $event, c.id )" class="btn btn-outline-danger md-raised"><i class="fa fa-trash" aria-hidden="true"></i> Borrar</button></td>
-            </tr>
-        </tbody>
+            <thead class="thead-inverse">
+                <tr>
+                    <th style="width:15%"><i class="fa fa-asterisk" aria-hidden="true"></i>  Nombre</th>
+                    <th><i class="fa fa-indent" aria-hidden="true"></i> Descripción</th>
+                    <th style="width:15%"><i class="fa fa-cube" aria-hidden="true"></i> Tipo de Cabaña</th>
+                    <th style="width:15%"><i class="fa fa-money" aria-hidden="true"></i> Precio</th>
+                    <th class="text-sm-center"><i class="fa fa-pencil" aria-hidden="true"></i></th>
+                    <th class="text-sm-center"><i class="fa fa-trash" aria-hidden="true"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in cabins">
+                    <td><a href="#/cabins/detail/{{c.id}}"><p class="lead">{{c.name}}</p></td>
+                    <td><p class="lead">{{c.description}}</p></td>
+                    <td><p class="lead">{{c.cabin_type.name}}</p></td>
+                    <td><p class="lead">{{c.price}}</p></td>
+                    <td><a href="#/cabins/edit/{{c.id}}"><button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil-square" aria-hidden="true"></i> Editar</button></a></td>
+                    <td><button type="button" ng-click="delete( $event, c.id )" class="btn btn-outline-danger md-raised"><i class="fa fa-trash" aria-hidden="true"></i> Borrar</button></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 

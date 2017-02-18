@@ -1,0 +1,162 @@
+<div  ng-controller="reservation-cabin-controller">
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#/reservations"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Reservaciones</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-bed" aria-hidden="true"></i> cabañas</li>
+    </ol>
+
+    <h2 class="display-3">{{title}}</h2>
+
+    <br/>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            <h5 class="lead"> <i class="fa fa-bed" aria-hidden="true"></i> Disponibles</h5>
+        </div>
+        <div class="col-md-4">
+            <a href="#/reservations/cabin/new"><button type="button" class="btn btn-primary" style="width:100%;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nueva reservación</button></a>
+        </div>
+    </div>
+    <hr>
+    <div class="row" id="recipt" >
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert" ng-if="errors">
+                <strong>Error al agregar objecto</strong>
+                <p>{{errors}}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h2>Información de reservación</h2>
+
+            <hr />
+
+            <div class="card" style="width:100%;">
+
+                <div class="card-block">
+                    <h4 class="card-title">{{reservation.reservation_info.full_name}}</h4>
+                    <p class="card-text">{{reservation.reservation_info.email}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Teléfono :</b> {{reservation.reservation_info.phone_number}}</li>
+                    <li class="list-group-item"><b>Dirección 1 :</b> {{reservation.reservation_info.address1}}</li>
+                    <li class="list-group-item"><b>Dirección 2 :</b> {{reservation.reservation_info.address2}}</li>
+                    <li class="list-group-item"><b>Código Postal :</b> {{reservation.reservation_info.zip_code}}</li>
+                    <li class="list-group-item"><b>Ciudad :</b> {{reservation.reservation_info.city}}</li>
+                    <li class="list-group-item"><b>Estado :</b> {{reservation.reservation_info.state}}</li>
+                    <li class="list-group-item"><b>País :</b> {{reservation.reservation_info.country}}</li>
+                </ul>
+                <div class="card-block text-align-right">
+                    <a href="#" class="card-link ">Editar</a>
+                    <a href="#" class="card-link ">Enviar a correo</a>
+                    <a class="card-link " ng-click="print()">Imprimir</a>
+                    <a href="#" class="card-link ">Alertar</a>
+                    <a href="#" class="card-link ">Pagar</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-8">
+
+            <h2>Detalle de reservación</h2>
+
+            <hr/>
+
+            <div class="card">
+                <div class="card-block">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th><i class="fa fa-asterisk" aria-hidden="true"></i>  Detalle</th>
+                                <th style="width:15%"><i class="fa fa-money" aria-hidden="true"></i> P/U</th>
+                                <th style="width:15%"><i class="fa fa-people" aria-hidden="true"></i> Cantidad</th>
+                                <th style="width:15%"><i class="fa fa-money" aria-hidden="true"></i> SubTotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Máximo de personas
+                                </td>
+                                <td>
+                                    $ 0.00
+                                </td>
+                                <td>
+                                    {{reservation.max_guests}}
+                                </td>
+                                <td>
+                                    $ 0.00
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Boletos Extra Niños
+                                </td>
+                                <td>$ {{ticket_price_child}}</td>
+                                <td>
+                                    {{ reservation.extra_guests_child }}
+                                </td>
+                                <td>$ {{ reservation.extra_guests_child * ticket_price_child }}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Boletos Extra Niños
+                                </td>
+                                <td>$ {{ticket_price_adult}}</td>
+                                <td>
+                                    {{ reservation.extra_guests_adult }}
+                                </td>
+                                <td>$ {{ reservation.extra_guests_adult * ticket_price_adult }}</td>
+                            </tr>
+                            <tr ng-repeat="d in reservation.details">
+                                <td>
+                                    <div class="form-group">
+                                        {{d.product.name}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        $ {{ d.product.price }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        {{ d.qty }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        $ {{ d.qty * d.product.price }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br />
+
+                    <table style="width:80%;"class="table table-bordered table-hover pull-right">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th> Entrada</th>
+                                <th> Salida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{reservation.date_start|dateFilter}}</td>
+                                <td>{{reservation.date_end|dateFilter}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div style="width:40%;" class="card card-outline-danger pull-right">
+                        <div class="card-block">
+                            <h1 class="display-5">Total $ {{reservation.total}}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

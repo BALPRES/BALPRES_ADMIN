@@ -224,7 +224,6 @@ router.delete( '/:id', jsonParser, function( req, res ) {
             }
         }
     );
-
 });
 
 module.exports = router;

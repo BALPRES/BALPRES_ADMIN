@@ -72,14 +72,11 @@ app
                     if( !data.error ) {
                         var the_data = data.data;
                         $scope.tasks = the_data.data;
-                        console.log( $scope.assigned_tasks );
                     } else {
                         $scope.errors = data.message;
-                        console.log( data.message );
                     }
                 }).error( function( error ) {
                     $scope.errors = error;
-                    console.log( error );
                 });
             };
 
@@ -88,14 +85,11 @@ app
                     if( !data.error ) {
                         var the_data = data.data;
                         $scope.assigned_tasks = the_data.data;
-                        console.log( $scope.assigned_tasks );
                     } else {
                         $scope.errors = data.message;
-                        console.log( data.message );
                     }
                 }).error( function( error ) {
                     $scope.errors = error;
-                    console.log( error );
                 });
             };
 
@@ -104,14 +98,11 @@ app
                     if( !data.error ) {
                         var the_data = data.data;
                         $scope.users = the_data.data;
-                        console.log( the_data );
                     } else {
                         $scope.errors = data.message;
-                        console.log( $scope.errors );
                     }
                 }).error( function( error ) {
                     $scope.errors = error;
-                    console.log( error );
                 });
             };
 

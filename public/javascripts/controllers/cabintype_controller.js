@@ -36,35 +36,25 @@ app
                 });
             },
             validateData : function( data, scope ) {
-                var ban = false;
+                var ban = true;
                 scope.errors = "";
-                if( data.name.length > 1 && data.name.length < 100 ) {
-                    ban = true;
-                } else {
+                if( data.name.length < 1 || data.name.length > 100 ) {
                     ban = false;
                     scope.errors += "Por favor escriba un nombre válido. \n";
                 }
-                if( data.description.length > 1 && data.description.length < 200 ) {
-                    ban = true;
-                } else {
+                if( data.description.length < 1 || data.description.length > 200 ) {
                     ban = false;
                     scope.errors += "Por favor escriba una descripción válida. \n";
                 }
-                if( data.rooms > 0 ) {
-                    ban = true;
-                } else {
+                if( data.rooms == 0 ) {
                     ban = false;
                     scope.errors += "Por favor agregué un número de cuartos válido. \n";
                 }
-                if( data.max_guests > 0 ) {
-                    ban = true;
-                } else {
+                if( data.max_guests == 0 ) {
                     ban = false;
                     scope.errors += "Por favor agregué un Máximo válido. \n";
                 }
-                if( data.max_extra_guests > 0 ) {
-                    ban = true;
-                } else {
+                if( data.max_extra_guests == 0 ) {
                     ban = false;
                     scope.errors += "Por favor agregué un Extra válido. \n";
                 }
