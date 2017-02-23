@@ -2,7 +2,7 @@ app
     .factory( 'ReservationCabinRepository', [ '$http', function( $http ) {
         return({
             getAll : function( calendar ) {
-                var date_1 = calendar.date_start.getFullYear() + '-' + ( calendar.date_start.getMonth() + 1 ) + '-' + ( calendar.date_start.getDate() + 1 ),
+                var date_1 = calendar.date_start.getFullYear() + '-' + ( calendar.date_start.getMonth() + 1 ) + '-' + calendar.date_start.getDate(),
                     date_2 = calendar.date_end.getFullYear() + '-' + ( calendar.date_end.getMonth() + 1 ) + '-' + calendar.date_end.getDate();
                 return $http({
                     url : '/reservation/cabin?d1=' + date_1 + '&d2=' + date_2,
@@ -231,7 +231,7 @@ app
                             '$ ' + ( detail.product.price * detail.qty )
                         ]);
                     });
-                    pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+                    pdfMake.createPdf(docDefinition).download("Reservation_" + $scope.reservation.id + ".pdf");
                 };
 
             } else {

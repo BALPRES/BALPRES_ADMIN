@@ -75,6 +75,7 @@ app
                     'CabinRepository',
                     'CabinTypeRepository',
                     'AuthRepository',
+                    'ImageRepository',
                     function(
                         $scope,
                         $rootScope,
@@ -83,7 +84,8 @@ app
                         $mdDialog,
                         CabinRepository,
                         CabinTypeRepository,
-                        AuthRepository ) {
+                        AuthRepository,
+                        ImageRepository ) {
 
         if( AuthRepository.viewVerification() ) {
 
@@ -117,28 +119,13 @@ app
 
             if( $routeParams.id ) {
 
-                CabinTypeRepository.getAll().success( function( data ) {
-
-                    if( !data.error ) {
-
-                        var the_data = data.data;
-                        $scope.cabintypes = the_data.data;
-
-                        CabinRepository.getById( $routeParams.id ).success( function( d ) {
-                            if( !d.error ) {
-                                $scope.cabin = d.data;
-                                $scope.cabin.price = parseFloat( $scope.cabin.price );
-                                $scope.cabin.cabin_type = $scope.cabintypes.find( ct => ct.id == $scope.cabin.cabin_type );
-                            } else {
-                                $scope.errors = d.message;
-                            }
-                        }).error( function( error ) {
-                            $scope.errors = error;
-                        });
+                CabinRepository.getById( $routeParams.id ).success( function( d ) {
+                    if( !d.error ) {
+                        $scope.cabin = d.data;
+                        $scope.cabin.price = parseFloat( $scope.cabin.price );
                     } else {
-                        $scope.errors = data.message;
+                        $scope.errors = d.message;
                     }
-
                 }).error( function( error ) {
                     $scope.errors = error;
                 });
@@ -166,11 +153,16 @@ app
                 allCabins();
                 allCabinTypes();
 
+                $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
+                    $scope.cabin_image = fileObj.base64;
+                };
+
                 $scope.cabin = {
                     name : "",
                     description : "",
                     cabin_type : 0,
-                    price : 0
+                    price : 0,
+                    img_url : ""
                 };
 
                 $scope.add = function() {
@@ -182,6 +174,15 @@ app
                             if( !data.error ) {
                                 $scope.cabin = data.data;
                                 $scope.cabin.price = parseFloat( $scope.cabin.price );
+                                if( $scope.cabin_image ) {
+                                    ImageRepository.imageToCabin( $scope.cabin.id, $scope.cabin_image ).success( function( d ) {
+                                        $location.path( '/cabins' );
+                                    }).error( function( error ) {
+                                        $scope.errors = error;
+                                    });
+                                } else {
+                                    $location.path( '/cabins' );
+                                }
                             } else {
                                 $scope.errors = data.message;
                             }

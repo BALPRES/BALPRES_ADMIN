@@ -14,8 +14,11 @@
         <div class="col-md-7">
             <h5 class="lead"> <i class="fa fa-bed" aria-hidden="true"></i> Disponibles</h5>
         </div>
-        <div class="col-md-4">
-            <a href="#/reservations/cabin/new"><button type="button" class="btn btn-primary" style="width:100%;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nueva reservación</button></a>
+        <div class="co-md-4">
+            <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-envelope" aria-hidden="true"></i> Enviar</button>
+            <button type="button" class="btn btn-sm btn-info" ng-click="print()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+            <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-bell-o" aria-hidden="true"></i> Alertar</button>
+            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar</button>
         </div>
     </div>
     <hr>
@@ -27,7 +30,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <h2>Información de reservación</h2>
+            <h2>Información</h2>
 
             <hr />
 
@@ -47,11 +50,7 @@
                     <li class="list-group-item"><b>País :</b> {{reservation.reservation_info.country}}</li>
                 </ul>
                 <div class="card-block text-align-right">
-                    <a href="#" class="card-link ">Editar</a>
-                    <a href="#" class="card-link ">Enviar a correo</a>
-                    <a class="card-link " ng-click="print()">Imprimir</a>
-                    <a href="#" class="card-link ">Alertar</a>
-                    <a href="#" class="card-link ">Pagar</a>
+                    <button type="button" class="btn btn-sm btn-info pull-right"><i class="fa fa-print" aria-hidden="true"></i> Editar</button>
                 </div>
             </div>
 

@@ -20,6 +20,8 @@ var reservation = require( './routes/reservation' );
 var reservationinfo = require( './routes/reservationinfo' );
 var paymentstatus = require( './routes/paymentstatus' );
 var promotion = require( './routes/promotion' );
+var settings = require( './routes/settings' );
+var contents = require( './routes/contents' );
 
 var app = express();
 
@@ -43,6 +45,8 @@ app.use( '/reservationtype', reservationtype );
 app.use( '/reservationinfo', reservationinfo );
 app.use( '/paymentstatus', paymentstatus );
 app.use( '/promotion', promotion );
+app.use( '/settings', settings );
+app.use( '/contents', contents );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

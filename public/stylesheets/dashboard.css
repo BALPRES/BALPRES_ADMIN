@@ -81,3 +81,12 @@ h1 {
     background-color: #d9534f;
     color : white;
 }
+
+main.ng-scope {
+  height: auto;
+  background-color: white;
+}
+
+.services-icon-fig {
+    font-size: 100px;
+}

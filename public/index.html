@@ -22,7 +22,7 @@
                 <div class="row">
                     <nav ng-include="'../includes/menu.html'" class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar" ng-controller="menu-cotroller"></nav>
 
-                    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" ng-view ></main>
+                    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" style="margin-top:-50px;" ng-view ></main>
                 </div>
             </div>
         </div>
@@ -45,9 +45,11 @@
         <script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.js'></script>
 
         <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/adonespitogo/angular-base64-upload/master/src/angular-base64-upload.js"></script>
         <script src="../javascripts/libs/fusionchart/js/fusioncharts.js"></script>
         <script src="../javascripts/libs/angular-fusioncharts.min.js"></script>
         <script src="../javascripts/libs/html2canvas.js"></script>
+        <script src="../javascripts/libs/image_service.js"></script>
         <script src="../vendor/pdfmake/build/pdfmake.js"></script>
         <script src="../vendor/pdfmake/build/vfs_fonts.js"></script>
 
@@ -82,6 +84,7 @@
         <script src='../javascripts/controllers/reservationcabin_controller.js'></script>
         <script src='../javascripts/controllers/paymentstatus_controller.js'></script>
         <script src='../javascripts/controllers/settings_controller.js'></script>
+        <script src='../javascripts/controllers/contents_controller.js'></script>
 
     </body>
 </html>

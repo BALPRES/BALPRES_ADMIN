@@ -19,8 +19,16 @@
 
     <div class="row">
         <div class="col-md-6">
+            <div class="alert alert-danger" role="alert" ng-if="errors">
+                <strong>Error al editar objecto!</strong> {{errors}}
+            </div>
+        </div>
+    </div>
 
-            <h3>Numeros de Alerta</h3>
+    <div class="row">
+        <div class="col-md-6">
+
+            <h3><i class="fa fa-commenting-o" aria-hidden="true"></i> Números de Alerta <small>[<a href="#/settings/alertnumbers">Editar</a>]</small></h3>
 
             <hr>
 
@@ -32,97 +40,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="an in alertnumbers">
                         <td>
                             <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_contact_1_name"
-                                    ng-model="alert_contact_1_name"
-                                    placeholder="Contacto de alerta 1">
+                                <p>{{an.name}}</p>
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_contact_1_phone"
-                                    ng-model="alert_contact_1_phone"
-                                    placeholder="Teléfono">
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_contact_2_name"
-                                    ng-model="alert_contact_2_name"
-                                    placeholder="Contacto de alerta 2">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_contact_2_phone"
-                                    ng-model="alert_contact_2_phone"
-                                    placeholder="Teléfono">
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_contact_3_name"
-                                    ng-model="alert_contact_3_name"
-                                    placeholder="Contacto de alerta 3">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_contact_3_phone"
-                                    ng-model="alert_contact_3_phone"
-                                    placeholder="Teléfono">
+                                <p>{{an.phone_number}}</p>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div class="row">
-                <div class="col-md-6">
-                </div>
-                <div class="col-md-6">
-                    <button
-                        class="btn btn-danger"
-                        type="button"
-                        name="button">Cancelar</button>
-                    <button
-                        class="btn btn-success pull-right"
-                        type="button"
-                        name="button"
-                        ng-click="save_no_alerts()">Guardar</button>
-                </div>
-            </div>
 
+            <small>{{no_alerts_des}}</small>
         </div>
 
         <div class="col-md-6">
 
-            <h3>Correos de Alerta</h3>
+            <h3><i class="fa fa-envelope-o" aria-hidden="true"></i> Correos de Alerta <small>[<a href="#/settings/alertemails">Editar</a>]</small></h3>
 
             <hr>
 
@@ -134,93 +72,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="ae in alertemails">
                         <td>
                             <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_email_1_name"
-                                    ng-model="alert_email_1_name"
-                                    placeholder="Contacto de alerta 1">
+                                <p class="lead">{{ae.name}}</p>
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_email_1_email"
-                                    ng-model="alert_email_1_email"
-                                    placeholder="Teléfono">
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_email_2_name"
-                                    ng-model="alert_email_2_name"
-                                    placeholder="Contacto de alerta 2">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_email_2_email"
-                                    ng-model="alert_email_2_email"
-                                    placeholder="Teléfono">
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_email_3_name"
-                                    ng-model="alert_email_3_name"
-                                    placeholder="Contacto de alerta 3">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    name="alert_email_3_email"
-                                    ng-model="alert_email_3_email"
-                                    placeholder="Teléfono">
+                                <p class="lead">{{ae.email}}</p>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="row">
-                <div class="col-md-6">
-                </div>
-                <div class="col-md-6">
-                    <button
-                        class="btn btn-danger"
-                        type="button"
-                        name="button">Cancelar</button>
-                    <button
-                        class="btn btn-success pull-right"
-                        type="button"
-                        name="button"
-                        ng-click="save_emails_alert()">Guardar</button>
-                </div>
-            </div>
-
+            <small>{{emails_alert_des}}</small>
         </div>
     </div>
 
@@ -229,47 +96,24 @@
     <div class="row">
         <div class="col-md-6">
 
-            <h3>Correo de Contacto</h3>
+            <h3><i class="fa fa-id-card-o" aria-hidden="true"></i> Correo de Contacto <small>[<a href="#/settings/contactemail">Editar</a>]</small></h3>
 
             <hr>
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input
-                            class="form-control"
-                            type="text"
-                            name="contact_name"
-                            ng-model="contact_name"
-                            placeholder="Nombre Contacto">
+                        <p class="lead">Nombre de contacto : {{contactemail[0].name}}</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input
-                            class="form-control"
-                            type="text"
-                            name="contact_email"
-                            ng-model="contact_email"
-                            placeholder="Correo Contacto">
+                        <p class="lead">Correo de contacto : {{contactemail[0].email}}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6"> </div>
-                <div class="col-md-6">
-                    <button
-                        class="btn btn-danger"
-                        type="button"
-                        name="button">Cancelar</button>
-                    <button
-                        class="btn btn-success pull-right"
-                        type="button"
-                        name="button"
-                        ng-click="save_email_contact()">Guardar</button>
-                </div>
-            </div>
+            <small>{{email_contact_des}}</small>
         </div>
     </div>
 
@@ -278,94 +122,43 @@
     <div class="row">
         <div class="col-md-6">
 
-            <h3>Precios de Boletos</h3>
+            <h3><i class="fa fa-ticket" aria-hidden="true"></i> Precios de Boletos <small>[<a href="#/settings/ticketprices">Editar</a>]</small></h3>
 
             <hr>
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="ticket_price_child">Boleto de Niño</label>
-                        <input
-                            class="form-control"
-                            type="number"
-                            name="ticket_price_child"
-                            ng-model="ticket_price_child"
-                            placeholder="Precio Niño">
+                        <p class="lead">Boleto de niño : <b>{{ticketprices[0].price}}</b></p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="ticket_price_adult">Boleto de Adulto</label>
-                        <input
-                            class="form-control"
-                            type="number"
-                            name="ticket_price_adult"
-                            ng-model="ticket_price_adult"
-                            placeholder="Precio Adulto">
+                        <p class="lead">Boleto de adulto : <b>{{ticketprices[1].price}}</b></p>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                </div>
-                <div class="col-md-6">
-                    <button
-                        class="btn btn-danger"
-                        type="button"
-                        name="button">Cancelar</button>
-                    <button
-                        class="btn btn-success pull-right"
-                        type="button"
-                        name="button"
-                        ng-click="save_ticket_prices()">Guardar</button>
-                </div>
-            </div>
+            <small>{{ticket_prices_des}}</small>
         </div>
 
         <div class="col-md-6">
-            <h3>Firma de Recibos</h3>
+            <h3><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Firma de Recibos <small>[<a href="#/settings/signature">Editar</a>]</small></h3>
             <hr>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="signature_name">Nombre</label>
-                        <input
-                            class="form-control"
-                            type="text"
-                            name="signature_name"
-                            ng-model="signature_name"
-                            placeholder="Nombre">
+                        <label for="signature_name" class="lead">Firma : {{signatures[0].name}}</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="signature_file">Firma</label>
-                        <input
-                            class="form-control"
-                            type="file"
-                            name="signature_file"
-                            ng-model="signature_file"
-                            placeholder="Firma">
+                        <img src="{{signatures[0].img_url}}" class="img-fluid"alt="">
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                </div>
-                <div class="col-md-6">
-                    <button
-                        class="btn btn-danger"
-                        type="button"
-                        name="button">Cancelar</button>
-                    <button
-                        class="btn btn-success pull-right"
-                        type="button"
-                        name="button"
-                        ng-click="save_signature()">Guardar</button>
-                </div>
-            </div>
+
+            <small>{{signature_des}}</small>
         </div>
     </div>
 

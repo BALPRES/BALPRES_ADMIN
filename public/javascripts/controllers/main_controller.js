@@ -1,4 +1,4 @@
-var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial', 'ng-fusioncharts', 'ui.router', 'ui.calendar', 'ui.bootstrap' ] )
+var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial', 'ng-fusioncharts', 'ui.router', 'ui.calendar', 'ui.bootstrap', 'image-service', 'naif.base64' ] )
     .run( [ '$rootScope', '$location', 'AuthRepository', function( $rootScope, $location, AuthRepository ) {
         $rootScope.isLoggedIn = {
             show_app : true,
@@ -154,8 +154,42 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
                 templateUrl : '../views/promotions/new.html'
             })
             // general
+            .when( '/settings/alertnumbers', {
+                templateUrl : '../views/general/edit_alertnumbers.html'
+            })
+            .when( '/settings/alertemails', {
+                templateUrl : '../views/general/edit_alertemails.html'
+            })
+            .when( '/settings/contactemail', {
+                templateUrl : '../views/general/edit_contactemail.html'
+            })
+            .when( '/settings/ticketprices', {
+                templateUrl : '../views/general/edit_ticketprices.html'
+            })
+            .when( '/settings/signature', {
+                templateUrl : '../views/general/edit_signature.html'
+            })
             .when( '/settings/', {
                 templateUrl : '../views/general/settings.html'
+            })
+            // website
+            .when( '/contents/ourcompany/', {
+                templateUrl : '../views/website/edit_ourcompany.html'
+            })
+            .when( '/contents/ourservices/', {
+                templateUrl : '../views/website/edit_ourservices.html'
+            })
+            .when( '/contents/recomendations/', {
+                templateUrl : '../views/website/edit_recomendations.html'
+            })
+            .when( '/contents/ourpersonal/', {
+                templateUrl : '../views/website/edit_ourpersonal.html'
+            })
+            .when( '/contents/ourproducts/', {
+                templateUrl : '../views/website/edit_ourproducts.html'
+            })
+            .when( '/contents/', {
+                templateUrl : '../views/website/contents.html'
             })
             .otherwise({
                 redirectTo : '/404'
@@ -218,5 +252,18 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             month[10] = "Noviembre";
             month[11] = "Diciembre";
             return ( d.getDate() + 1 ) + " " + month[d.getMonth()] + " " + d.getFullYear();
+        };
+    })
+    .directive('stringToNumber', function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, element, attrs, ngModel) {
+                ngModel.$parsers.push(function(value) {
+                    return '' + value;
+                });
+                ngModel.$formatters.push(function(value) {
+                    return parseFloat(value);
+                });
+            }
         };
     });
