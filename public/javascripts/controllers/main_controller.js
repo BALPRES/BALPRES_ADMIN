@@ -1,4 +1,4 @@
-var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial', 'ng-fusioncharts', 'ui.router', 'ui.calendar', 'ui.bootstrap', 'image-service', 'naif.base64' ] )
+var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial', 'ng-fusioncharts', 'ui.router', 'ui.calendar', 'ui.bootstrap', 'image-service', 'document-service', 'naif.base64' ] )
     .run( [ '$rootScope', '$location', 'AuthRepository', function( $rootScope, $location, AuthRepository ) {
         $rootScope.isLoggedIn = {
             show_app : true,
@@ -35,6 +35,12 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             })
             .when( '/tasks_super_admin', {
                 templateUrl : '../views/tasks/list_sa.html'
+            })
+            .when( '/tasks_admin', {
+                templateUrl : '../views/tasks/list_a.html'
+            })
+            .when( '/tasks_general', {
+                templateUrl : '../views/tasks/list_g.html'
             })
             .when( '/reservationtypes', {
                 templateUrl : '../views/reservationtypes/list.html'
@@ -195,10 +201,10 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
                 redirectTo : '/404'
             });
     }])
-    .controller( 'navbar-controller', [ '$scope', 'AuthRepository', function( $scope, AuthRepository ) {
+    .controller( 'navbar-controller', [ '$scope', '$rootScope', 'AuthRepository', function( $scope, $rootScope, AuthRepository ) {
 
         $scope.project_name = "BALPRES-ADMIN";
-
+        $rootScope.user_info = AuthRepository.getSession();
         $scope.logout = function() {
             AuthRepository.logout().success( function( data ) {
                 AuthRepository.viewVerification();

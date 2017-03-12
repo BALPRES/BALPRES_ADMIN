@@ -50,17 +50,18 @@ router.post( '/login', jsonParser, function( req, res ) {
                     res.send( jsonData );
                     break;
                 case 200 :
-                    var data_from_server = encryption_system.decryptJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        message : data_from_server.message
-                    });
-                    var user_data = JSON.stringify({
-                        username : form_data.username,
-                        rol : data_from_server.data,
-                        auth_data : encryption_system.encryptCookie( http_helper.get_user_basic_auth( form_data.username, form_data.password ) )
-                    });
-                    res.cookie( 'userdata', user_data )
+                    var data_from_server = encryption_system.decryptJSON( body ),
+                        jsonData = JSON.stringify({
+                            error : false,
+                            message : data_from_server.message
+                        }),
+                        user_data = JSON.stringify({
+                            username : form_data.username,
+                            full_name : data_from_server.data['full_name'],
+                            rol : data_from_server.data['rol'],
+                            auth_data : encryption_system.encryptCookie( http_helper.get_user_basic_auth( form_data.username, form_data.password ) )
+                        });
+                    res.cookie( 'userdata', user_data );
                     res.send( jsonData );
                     break;
                 default :

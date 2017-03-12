@@ -2,7 +2,7 @@
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#/contents"><i class="fa fa-gears" aria-hidden="true"></i> Contenidos</a></li>
-        <li class="breadcrumb-item active"><i class="fa fa-envelope-o" aria-hidden="true"></i> Editar Contenido</li>
+        <li class="breadcrumb-item active"><i class="fa fa-edit" aria-hidden="true"></i> Editar Contenido</li>
     </ol>
 
 
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-11">
-            <h5 class="lead"> <i class="fa fa-envelope-o" aria-hidden="true"></i> Recomendaciones</h5>
+            <h5 class="lead"> <i class="fa fa-edit" aria-hidden="true"></i> Recomendaciones</h5>
         </div>
     </div>
 
@@ -26,8 +26,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card card-outline-primary mb-3 text-left">
                 <div class="card-header text-sm-center lead">
                     Editar
@@ -39,13 +38,34 @@
                     </div>
                     <form ng-submit="save_recomendations()">
 
+                        <div ng-repeat="r in recomendationscontents" class="row">
+                            <div class="col-md-12 form-group">
+                                <textarea
+                                    type="text"
+                                    class="form-control"
+                                    ng-model="r.content"
+                                    maxlength="1000"
+                                    placeholder="Contenido"></textarea>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name"
+                                    ng-model="r.source"
+                                    maxlength="200"
+                                    placeholder="Fuente">
+                            </div>
+                            <hr>
+                        </div>
+
 
                         <br>
                         <hr>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group text-sm-left">
-                                    <a href="#/settings">
+                                    <a href="#/contents">
                                         <button type="button" class="btn btn-danger"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> Cancelar</button>
                                     </a>
                                 </div>
@@ -61,6 +81,5 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>

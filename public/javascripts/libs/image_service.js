@@ -23,10 +23,26 @@ angular.module( 'image-service', [])
                         data : jsonData
                     });
                 },
-                imageToContent : function( id, data ) {
+                image1ToOurCompanyContent : function( id, data ) {
                     var jsonData = JSON.stringify( data );
                     return $http({
-                        url : imageData.getApiUri( 'content/image/' + id ),
+                        url : imageData.getApiUri( 'website/ourcompanycontent/image1/' + id ),
+                        method : 'PUT',
+                        data : jsonData
+                    });
+                },
+                image2ToOurCompanyContent : function( id, data ) {
+                    var jsonData = JSON.stringify( data );
+                    return $http({
+                        url : imageData.getApiUri( 'website/ourcompanycontent/image2/' + id ),
+                        method : 'PUT',
+                        data : jsonData
+                    });
+                },
+                imageToOurPersonalContent : function( id, data ) {
+                    var jsonData = JSON.stringify( data );
+                    return $http({
+                        url : imageData.getApiUri( 'website/ourpersonalcontent/image/' + id ),
                         method : 'PUT',
                         data : jsonData
                     });

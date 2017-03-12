@@ -163,7 +163,36 @@
 
 <script>
     $(document).ready( function() {
-        $('#date_start').datetimepicker();
-        $('#date_end').datetimepicker();
+        $('#date_start').datetimepicker({
+            format:'Y/m/d',
+            timepicker: false,
+            onShow:function( ct ){
+                var endDate = $('#date_end').val() ? new Date( $('#date_end').val() ) : false;
+                if( endDate!=false ) {
+                    endDate.setDate( endDate.getDate() - 1 );
+                    this.setOptions({
+                        maxDate : jQuery('#date_end').val() ? endDate : false
+                    })
+                }
+            },
+            scrollMonth : false,
+            scrollInput : false
+        });
+
+        $('#date_end').datetimepicker({
+            format:'Y/m/d',
+            timepicker: false,
+            onShow:function( ct ){
+                var endDate = $('#date_start').val() ? new Date( $('#date_start').val() ) : false;
+                if( endDate!=false ) {
+                    endDate.setDate( endDate.getDate() + 1 );
+                    this.setOptions({
+                        minDate : jQuery('#date_start').val() ? endDate : false
+                    })
+                }
+            },
+            scrollMonth : false,
+            scrollInput : false
+        });
     });
 </script>

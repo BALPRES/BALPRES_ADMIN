@@ -81,6 +81,10 @@ h1 {
     background-color: #d9534f;
     color : white;
 }
+.thead-custom-blue {
+    background-color: #489fdf;
+    color : white;
+}
 
 main.ng-scope {
   height: auto;

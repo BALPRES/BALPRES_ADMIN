@@ -2,7 +2,8 @@
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#/reservations"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Reservaciones</a></li>
-        <li class="breadcrumb-item active"><i class="fa fa-bed" aria-hidden="true"></i> cabañas</li>
+        <li class="breadcrumb-item"><a href="#/reservations/cabin/"><i class="fa fa-bed" aria-hidden="true"></i> Cabañas</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-info" aria-hidden="true"></i> Detalle</li>
     </ol>
 
     <h2 class="display-3">{{title}}</h2>
@@ -63,6 +64,17 @@
 
             <div class="card">
                 <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-inverse card-danger text-center">
+                                <div class="card-block">
+                                    <blockquote class="card-blockquote">
+                                        <p>ID : <b>{{reservation.extended_token}}</b></p>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-inverse">
                             <tr>

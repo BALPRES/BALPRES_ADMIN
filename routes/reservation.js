@@ -14,8 +14,8 @@ var jsonParser = bodyParser.json();
 **/
 router.get( '/cabin', jsonParser, function( req, res ) {
 
-    var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-	var url_parts = urlLib.parse(req.url, true);
+    var userdata = JSON.parse( req.cookies[ 'userdata' ] ),
+	    url_parts = urlLib.parse(req.url, true);
 
     request(
         {
@@ -57,7 +57,6 @@ router.get( '/cabin', jsonParser, function( req, res ) {
 router.post( '/cabin/', jsonParser, function( req, res ) {
 
     var userdata = JSON.parse( req.cookies[ 'userdata' ] ),
-        url_parts = urlLib.parse( req.url, true ),
         form_data = req.body;
 
     request(

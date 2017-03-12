@@ -26,8 +26,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card card-outline-primary mb-3 text-left">
                 <div class="card-header text-sm-center lead">
                     Editar
@@ -40,12 +39,6 @@
                     <form ng-submit="save_ourproducts()">
 
                         <div class="row">
-                            <div class="col-md-12">
-                                <center>
-                                    <h2>Nuestros Productos</h2> [<a href="#/contents/ourproducts/">Editar</a>]
-                                </center>
-                                <hr>
-                            </div>
                             <div ng-repeat="opc in ourproductscontents" class="col-md-4">
                                 <div class="card">
                                     <div class="card-block">
@@ -93,6 +86,5 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>

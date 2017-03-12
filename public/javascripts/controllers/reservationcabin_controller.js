@@ -64,33 +64,48 @@ app
     }])
     .controller( 'reservation-cabin-controller',
                 [   '$scope',
-                    '$filter',
                     '$mdDialog',
                     '$location',
                     '$routeParams',
                     'AuthRepository',
+                    'DocumentService',
                     'uiCalendarConfig',
                     'CabinRepository',
                     'PromotionRepository',
+                    'SettingsRepository',
                     'ReservationCabinRepository',
                     function(
                         $scope,
-                        $filter,
                         $mdDialog,
                         $location,
                         $routeParams,
                         AuthRepository,
+                        DocumentService,
                         uiCalendarConfig,
                         CabinRepository,
                         PromotionRepository,
+                        SettingsRepository,
                         ReservationCabinRepository ) {
 
         if( AuthRepository.viewVerification() ) {
 
             $scope.title = "Reservaciones";
 
-            $scope.ticket_price_child = 30;
-            $scope.ticket_price_adult = 60;
+            SettingsRepository.getTicketPrices().success( function( data ) {
+                if( !data.error ) {
+                    var ticketprices = data.data;
+                    $scope.ticket_price_child = ticketprices[0].price;
+                    $scope.ticket_price_adult = ticketprices[1].price;
+                } else {
+                    $scope.errors = data.message;
+                    $scope.ticket_price_child = 0;
+                    $scope.ticket_price_adult = 0;
+                }
+            }).error( function( error ) {
+                $scope.errors = error;
+                $scope.ticket_price_child = 0;
+                $scope.ticket_price_adult = 0;
+            });
 
             if( $routeParams.id ) {
 
@@ -105,133 +120,7 @@ app
                 });
 
                 $scope.print = function() {
-                    var d1 = new Date( $scope.reservation.date_start ),
-                        d2 = new Date( $scope.reservation.date_end ),
-                        days = Math.ceil( Math.abs( d2.getTime() - d1.getTime() ) / ( 1000 * 3600 * 24 ) );
-                    var docDefinition = {
-                        header: {
-                            columns: [
-                                { text: 'Balneario Las Palmas', style: 'header' },
-                                { text: $filter( 'dateTimeFilter' ) ( $scope.reservation.timestamp ), alignment: 'right' }
-                            ]
-                        },
-                        footer: {
-                            columns: [
-                                'Este recibo se debe mostrar en la entrada.',
-                                { text: 'Todos los derechos reservados.', alignment: 'right' }
-                            ]
-                        },
-                        content: [
-                            '\n',
-                            { text : 'Información del Cliente', style: 'title' },
-                            '\n',
-                            { text: 'Nombre : ' + $scope.reservation.reservation_info.full_name, style: 'info' },
-                            '\n',
-                            { text: 'e-mail : ' + $scope.reservation.reservation_info.email, style: 'info' },
-                            '\n',
-                            {
-                                columns : [
-                                    {
-                                        width: 'auto',
-                                        text: 'Teléfono : ' + $scope.reservation.reservation_info.phone_number,
-                                        style : 'info'
-                                    },
-                                    {
-                                        width: 'auto',
-                                        text: 'Código Postal : ' + $scope.reservation.reservation_info.zip_code,
-                                        style : 'info'
-                                    }
-                                ],
-                                columnGap: 10
-                            },
-                            '\n',
-                            {
-                                columns : [
-                                    {
-                                        width: 'auto',
-                                        text: 'Ciudad : ' + $scope.reservation.reservation_info.city,
-                                        style : 'info'
-                                    },
-                                    {
-                                        width: 'auto',
-                                        text: 'Estado : ' + $scope.reservation.reservation_info.state,
-                                        style : 'info'
-                                    },
-                                    {
-                                        width: 'auto',
-                                        text: 'País : ' + $scope.reservation.reservation_info.country,
-                                        style : 'info'
-                                    }
-                                ],
-                                columnGap: 10
-                            },
-                            '\n',
-                            { text : 'Detalle de Reservación', style: 'title' },
-                            '\n',
-                            {
-                                table: {
-                                    headerRows: 1,
-                                    widths: [ '*', '*' ],
-                                    body: [
-                                        [
-                                            { text: 'Fecha entrada', bold: true },
-                                            { text: 'Fecha de salida', bold: true }
-                                        ],
-                                        [ $filter( 'dateFilter' ) ( $scope.reservation.date_start ) + ' 14:00 hrs', $filter( 'dateFilter' ) ( $scope.reservation.date_end ) + ' 13:00 hrs' ]
-                                    ]
-                                }
-                            },
-                            '\n',
-                            {
-                                table: {
-                                    headerRows: 1,
-                                    widths: [ '*', 100, 100, '*' ],
-                                    body: [
-                                        [
-                                            { text: 'Detalle', bold: true },
-                                            { text: 'P/U', bold: true },
-                                            { text: 'Cantidad', bold: true },
-                                            { text: 'Sub Total', bold: true }
-                                        ],
-                                        [ 'Máximo de personas', '$ 0.00', '' + $scope.reservation.max_guests, '$ 0.00' ],
-                                        [ 'Boletos Extra Niños', '$ ' + parseFloat( $scope.ticket_price_child ), '' + $scope.reservation.extra_guests_child, '$ ' + parseFloat( $scope.reservation.extra_guests_child * $scope.ticket_price_child ) ],
-                                        [ 'Boletos Extra Adultos', '$ ' + parseFloat( $scope.ticket_price_adult ), '' + $scope.reservation.extra_guests_adult, '$ ' + parseFloat( $scope.reservation.extra_guests_adult * $scope.ticket_price_adult ) ]
-                                    ]
-                                }
-                            },
-                            '\n',
-                            { text: 'Sub Total : ' + '$ ' + ( $scope.reservation.total / days ), style : { fontSize : 16, alignment: 'right' } },
-                            '\n',
-                            { text: ' Por ' + days + ' noches', style : { fontSize : 14, bold:true, alignment: 'right' } },
-                            '\n',
-                            { text: 'Total : ' + '$ ' + $scope.reservation.total, style : 'total' }
-                        ],
-                        styles: {
-                            header: {
-                                fontSize: 18,
-                                bold: true
-                            },
-                            title : {
-                                fontSize : 18
-                            },
-                            total : {
-                                fontSize : 18,
-                                alignment : 'right'
-                            },
-                            info : {
-                                fontSize : 12
-                            }
-                        }
-                    };
-                    $scope.reservation.details.forEach( function( detail, index ) {
-                        docDefinition.content[15].table.body.push([
-                            detail.product.name,
-                            '$ ' + detail.product.price,
-                            '' + detail.qty,
-                            '$ ' + ( detail.product.price * detail.qty )
-                        ]);
-                    });
-                    pdfMake.createPdf(docDefinition).download("Reservation_" + $scope.reservation.id + ".pdf");
+                    DocumentService.printReservation( $scope.reservation, $scope.ticket_price_child, $scope.ticket_price_adult );
                 };
 
             } else {
@@ -241,6 +130,7 @@ app
                         if( !data.error ) {
                             var the_data = data.data;
                             $scope.cabins = the_data;
+                            initReservation();
                         } else {
                             $scope.errors = data.message;
                         }
@@ -286,6 +176,31 @@ app
                     }).error( function( error ) {
                         $scope.errors = error;
                     });
+                };
+                var initReservation = function() {
+                    $scope.reservation = {
+                        total : 0,
+                        max_guests : 0,
+                        max_extra_guests : 0,
+                        date_start : "",
+                        date_end : "",
+                        reservation_type : 1,
+                        promotion : {},
+                        details : [],
+                        extra_guests_child : 0,
+                        extra_guests_adult : 0,
+                        reservationinfo : {
+                            full_name : "",
+                            email : "",
+                            address1 : "",
+                            address2 : "",
+                            zip_code : 0,
+                            state : "",
+                            country : "México",
+                            city : "",
+                            phone_number : ""
+                        }
+                    };
                 };
                 /* alert on eventClick */
                 $scope.alertOnEventClick = function( date, jsEvent, view){
@@ -339,29 +254,7 @@ app
                 $scope.events = [];
                 $scope.eventSources = [ $scope.events ];
 
-                $scope.reservation = {
-                    total : 0,
-                    max_guests : 0,
-                    max_extra_guests : 0,
-                    date_start : "",
-                    date_end : "",
-                    reservation_type : 1,
-                    promotion : {},
-                    details : [],
-                    extra_guests_child : 0,
-                    extra_guests_adult : 0,
-                    reservationinfo : {
-                        full_name : "",
-                        email : "",
-                        address1 : "",
-                        address2 : "",
-                        zip_code : 0,
-                        state : "",
-                        country : "México",
-                        city : "",
-                        phone_number : ""
-                    }
-                };
+                initReservation();
 
                 $scope.date_data = {
                     date_start : "",
@@ -398,8 +291,8 @@ app
 
                 $scope.onDateChange = function() {
                     if( set_dates() ) {
-                        calculate_total();
                         getCabins();
+                        calculate_total();
                     }
                 };
 

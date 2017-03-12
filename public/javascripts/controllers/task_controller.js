@@ -153,4 +153,13 @@ app
                 }
             };
         }
-    }]);
+    }])
+    .filter( 'getValueName', function() {
+        return function( value ) {
+            var values = new Array();
+            values[1] = "importante";
+            values[2] = "Normal";
+            values[3] = "No importante";
+            return values[value];
+        };
+    });

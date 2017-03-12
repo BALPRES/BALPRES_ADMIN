@@ -26,8 +26,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card card-outline-primary mb-3 text-left">
                 <div class="card-header text-sm-center lead">
                     Editar
@@ -53,6 +52,7 @@
 
                                 <select
                                     class="form-control"
+                                    ng-options="option for option in icons track by option"
                                     ng-model="osc.icon"></select>
                                 <h4><input
                                     type="text"
@@ -88,6 +88,5 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>
