@@ -1,41 +1,13 @@
 app
-    .factory( 'AreaRepository', [ '$http', function( $http ) {
+    .factory( 'AreaRepository', [ 'CRUDService', function( CRUDService ) {
+        var model = 'area';
         return({
-            getAll : function(  ) {
-                return $http({
-                    url : '/area',
-                    method : 'GET'
-                });
-            },
-            add : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/area',
-                    method : 'POST',
-                    data : jsonData
-                });
-            },
-            getById : function( id ) {
-                return $http({
-                    url : '/area/' + id,
-                    method : 'GET'
-                });
-            },
-            update : function( data ) {
-                var jsonData = JSON.stringify(data);
-                return $http({
-                    url : '/area/' + data.id,
-                    method : 'PUT',
-                    data : jsonData
-                });
-            },
-            remove : function( id ) {
-                return $http({
-                    url : '/area/' + id,
-                    method : 'DELETE'
-                });
-            },
-            validateData : function( data, scope ) {
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, data ),
+            remove : ( id ) => CRUDService.remove( model, id ),
+            validateData : ( data, scope ) => {
                 var ban = false;
                 scope.errors = "";
                 if( data.name.length > 1 && data.name.length < 100 ) {

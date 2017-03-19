@@ -2,22 +2,12 @@ app
     .factory( 'CabinRepository', [ 'CRUDService', '$http', function( CRUDService, $http ) {
         var model = "cabin";
         return({
-            getAll : function() {
-                return CRUDService.getAll( model );
-            },
-            add : function( data ) {
-                return CRUDService.add( model, data );
-            },
-            getById : function( id ) {
-                return CRUDService.getById( model, id );
-            },
-            update : function( data ) {
-                return CRUDService.update( model, data )
-            },
-            remove : function( id ) {
-                return CRUDService.remove( model, id );
-            },
-            validateData : function( data, scope ) {
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, data ),
+            remove : ( id ) => CRUDService.remove( model, id ),
+            validateData : ( data, scope ) => {
                 var ban = false;
                 scope.errors = "";
                 if( data.name.length > 1 && data.name.length < 100 ) {
