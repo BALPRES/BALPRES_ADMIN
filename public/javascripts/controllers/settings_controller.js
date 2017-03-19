@@ -1,71 +1,16 @@
 app
-    .factory( 'SettingsRepository', [ '$http', function( $http ) {
+    .factory( 'SettingsRepository', [ 'CRUDService', function( CRUDService ) {
         return({
-            getAlertNumbers : function() {
-                return $http({
-                    method : 'GET',
-                    url : '/settings/alertnumbers/'
-                });
-            },
-            getAlertEmails : function() {
-                return $http({
-                    method : 'GET',
-                    url : '/settings/alertemails/'
-                });
-            },
-            getContactEmail : function() {
-                return $http({
-                    method : 'GET',
-                    url : '/settings/contactemail/'
-                });
-            },
-            getTicketPrices : function() {
-                return $http({
-                    method : 'GET',
-                    url : '/settings/ticketprices/'
-                });
-            },
-            getSignatures : function() {
-                return $http({
-                    method : 'GET',
-                    url : '/settings/signatures/'
-                });
-            },
-            editAlertNumbers : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : '/settings/alertnumbers/',
-                    data : JSON.stringify( data )
-                });
-            },
-            editAlertEmails : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : '/settings/alertemails/',
-                    data : JSON.stringify( data )
-                });
-            },
-            editContactEmail : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : '/settings/contactemail/',
-                    data : JSON.stringify( data )
-                });
-            },
-            editTicketPrices : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : '/settings/ticketprices/',
-                    data : JSON.stringify( data )
-                });
-            },
-            editSignatures : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : '/settings/signatures/',
-                    data : JSON.stringify( data )
-                });
-            }
+            getAlertNumbers : () => CRUDService.getBunch( 'settings/alertnumbers' ),
+            getAlertEmails : () => CRUDService.getBunch( 'settings/alertemails' ),
+            getContactEmail : () => CRUDService.getBunch( 'settings/contactemail' ),
+            getTicketPrices : () => CRUDService.getBunch( 'settings/ticketprices' ),
+            getSignatures : () => CRUDService.getBunch( 'settings/signatures' ),
+            editAlertNumbers : ( data ) => CRUDService.updateBunch( 'settings/alertnumbers', data ),
+            editAlertEmails : ( data ) => CRUDService.updateBunch( 'settings/alertemails', data ),
+            editContactEmail : ( data ) => CRUDService.updateBunch( 'settings/contactemail', data ),
+            editTicketPrices : ( data ) => CRUDService.updateBunch( 'settings/ticketprices', data ),
+            editSignatures : ( data ) => CRUDService.updateBunch( 'settings/signatures', data )
         });
     }])
     .controller( 'settings-controller',

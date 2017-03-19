@@ -38,7 +38,24 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="col-md-12" style="overflow-y: scroll; height:500px;">
+            <div class="col-md-12">
+                <center>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" id="monthOption" autocomplete="off" checked ng-click="all()"> Todas
+                        </label>
+                        <label class="btn btn-danger">
+                            <input type="radio" name="options" id="yearOption" autocomplete="off" ng-click="notpayed()"> No pagadas
+                        </label>
+                        <label class="btn btn-warning">
+                            <input type="radio" name="options" id="allOption" autocomplete="off" ng-click="next()"> Próximas
+                        </label>
+                    </div>
+                </center>
+            </div>
+
+            <div class="col-md-12" style="overflow-y: scroll; height:480px;">
+                <br>
                 <div ng-repeat="r in reservations" class="card card-inverse" style="background-color: #333; border-color: #333;">
                     <div class="card-block">
                         <h3 class="card-title">{{r.reservation_info.full_name}}</h3>
@@ -65,3 +82,5 @@
     </div>
 
 </div>
+
+</script>

@@ -1,39 +1,21 @@
 app
-    .factory( 'CabinRepository', [ '$http', function( $http ) {
+    .factory( 'CabinRepository', [ 'CRUDService', '$http', function( CRUDService, $http ) {
+        var model = "cabin";
         return({
-            getAll : function(  ) {
-                return $http({
-                    url : '/cabin',
-                    method : 'GET'
-                });
+            getAll : function() {
+                return CRUDService.getAll( model );
             },
             add : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/cabin',
-                    method : 'POST',
-                    data : jsonData
-                });
+                return CRUDService.add( model, data );
             },
             getById : function( id ) {
-                return $http({
-                    url : '/cabin/' + id,
-                    method : 'GET'
-                });
+                return CRUDService.getById( model, id );
             },
             update : function( data ) {
-                var jsonData = JSON.stringify(data);
-                return $http({
-                    url : '/cabin/' + data.id,
-                    method : 'PUT',
-                    data : jsonData
-                });
+                return CRUDService.update( model, data )
             },
             remove : function( id ) {
-                return $http({
-                    url : '/cabin/' + id,
-                    method : 'DELETE'
-                });
+                return CRUDService.remove( model, id );
             },
             validateData : function( data, scope ) {
                 var ban = false;
@@ -96,6 +78,7 @@ app
                     if (!data.error) {
                         var the_data = data.data;
                         $scope.cabins = the_data.data;
+                        $scope.cabins_table = $scope.cabins;
                     } else {
                         $scope.errors = data.message;
                     }
@@ -165,7 +148,11 @@ app
                     img_url : ""
                 };
 
+                $scope.loanding = false;
+
                 $scope.add = function() {
+
+                    $scope.loanding = true;
 
                     $scope.cabin.cabin_type = $scope.cabin.cabin_type.id;
 
@@ -176,24 +163,29 @@ app
                                 $scope.cabin.price = parseFloat( $scope.cabin.price );
                                 if( $scope.cabin_image ) {
                                     ImageRepository.imageToCabin( $scope.cabin.id, $scope.cabin_image ).success( function( d ) {
+                                        $scope.loanding = false;
                                         $location.path( '/cabins' );
                                     }).error( function( error ) {
+                                        $scope.loanding = false;
                                         $scope.errors = error;
                                     });
                                 } else {
+                                    $scope.loanding = false;
                                     $location.path( '/cabins' );
                                 }
                             } else {
+                                $scope.loanding = false;
                                 $scope.errors = data.message;
                             }
                         }).error( function( error ) {
+                            $scope.loanding = false;
                             $scope.errors = error;
                         });
                     }
                 };
 
                 $scope.searchChange = function() {
-                    console.log( $scope.search_text );
+                    $scope.cabins_table = $scope.cabins.filter( c => c.name.includes( $scope.search_text ) || c.description.includes( $scope.search_text ) );
                 };
 
             }

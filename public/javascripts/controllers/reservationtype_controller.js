@@ -1,40 +1,12 @@
 app
-    .factory( 'ReservationTypeRepository', [ '$http', function( $http ) {
+    .factory( 'ReservationTypeRepository', [ 'CRUDService', function( CRUDService ) {
+        var model = 'reservationtype';
         return({
-            getAll : function() {
-                return $http({
-                    url : 'reservationtype',
-                    method : 'GET'
-                });
-            },
-            add : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/reservationtype',
-                    method : 'POST',
-                    data : jsonData
-                });
-            },
-            getById : function( id ) {
-                return $http({
-                    url : '/reservationtype/' + id,
-                    method : 'GET'
-                });
-            },
-            update : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/reservationtype',
-                    method : 'PUT',
-                    data : jsonData
-                });
-            },
-            delete : function( id ) {
-                return $http({
-                    url : '/reservationtype/' + id,
-                    method : 'DELETE'
-                });
-            },
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, data ),
+            delete : ( id ) => CRUDService.remove( model, id ),
             validateData : function( data, scope ) {
                 var ban = true;
                 scope.errors = "";

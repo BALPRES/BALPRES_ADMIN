@@ -1,27 +1,13 @@
 app
-    .factory( 'TaskRepository', [ '$http', function( $http) {
+    .factory( 'TaskRepository', [ 'CRUDService', function( CRUDService ) {
+        var model = "task";
         return({
-            getAll : function( ) {
-                return $http({
-                    url : '/task',
-                    method : 'GET'
-                });
-            },
-            add : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/task',
-                    method : 'POST',
-                    data : jsonData
-                });
-            },
-            getAssigned : function() {
-                return $http({
-                    url : '/task/assigned/',
-                    method : 'GET'
-                });
-            },
-            validateData : function( data, scope ) {
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            update : ( data ) => CRUDService.update( model, data ),
+            remove : ( id ) => CRUDService.remove( model, id ),
+            getAssigned : () => CRUDService.getAll( 'task/assigned' ),
+            validateData : ( data, scope ) => {
                 var ban = true;
                 scope.errors = "";
                 if( data.name.length < 1 && data.name.length > 100 ) {
@@ -68,61 +54,54 @@ app
             $scope.title = "Tareas";
 
             var allTasks = function() {
-                TaskRepository.getAll().success( function( data ) {
-                    if( !data.error ) {
-                        var the_data = data.data;
-                        $scope.tasks = the_data.data;
-                    } else {
-                        $scope.errors = data.message;
-                    }
-                }).error( function( error ) {
-                    $scope.errors = error;
-                });
-            };
-
-            var allAssignedTasks = function() {
-                TaskRepository.getAssigned().success( function( data ) {
-                    if( !data.error ) {
-                        var the_data = data.data;
-                        $scope.assigned_tasks = the_data.data;
-                    } else {
-                        $scope.errors = data.message;
-                    }
-                }).error( function( error ) {
-                    $scope.errors = error;
-                });
-            };
-
-            var getAllUsers = function() {
-                AuthRepository.getUserCat().success( function( data ) {
-                    if( !data.error ) {
-                        var the_data = data.data;
-                        $scope.users = the_data.data;
-                    } else {
-                        $scope.errors = data.message;
-                    }
-                }).error( function( error ) {
-                    $scope.errors = error;
-                });
-            };
-
-            var setAllValues = function(){
-                $scope.values = [
-                    { "name" : "importante", "id" : 3 },
-                    { "name" : "normal", "id" : 2 },
-                    { "name" : "no importante", "id" : 1 }
-                ];
-            };
-
-            var initTask = function() {
-                $scope.task = {
-                    name : "",
-                    description : "",
-                    value : $scope.values[2],
-                    date_end : "",
-                    user_assigned : { user : { id : 0, username : "" } }
+                    TaskRepository.getAll().success( function( data ) {
+                        if( !data.error ) {
+                            $scope.tasks = data.data;
+                        } else {
+                            $scope.errors = data.message;
+                        }
+                    }).error( function( error ) {
+                        $scope.errors = error;
+                    });
+                },
+                allAssignedTasks = function() {
+                    TaskRepository.getAssigned().success( function( data ) {
+                        if( !data.error ) {
+                            $scope.assigned_tasks = data.data;
+                        } else {
+                            $scope.errors = data.message;
+                        }
+                    }).error( function( error ) {
+                        $scope.errors = error;
+                    });
+                },
+                getAllUsers = function() {
+                    AuthRepository.getUserCat().success( function( data ) {
+                        if( !data.error ) {
+                            $scope.users = data.data;
+                        } else {
+                            $scope.errors = data.message;
+                        }
+                    }).error( function( error ) {
+                        $scope.errors = error;
+                    });
+                },
+                setAllValues = function(){
+                    $scope.values = [
+                        { "name" : "importante", "id" : 3 },
+                        { "name" : "normal", "id" : 2 },
+                        { "name" : "no importante", "id" : 1 }
+                    ];
+                },
+                initTask = function() {
+                    $scope.task = {
+                        name : "",
+                        description : "",
+                        value : $scope.values[2],
+                        date_end : "",
+                        user_assigned : { user : { id : 0, username : "" } }
+                    };
                 };
-            };
 
             allTasks();
             allAssignedTasks();
@@ -152,14 +131,17 @@ app
                     });
                 }
             };
+            $scope.delete = function( id ) {
+                TaskRepository.remove( id ).success( function( data ) {
+                    if( !data.error ) {
+                        allTasks();
+                        allAssignedTasks();
+                    } else {
+                        $scope.error = data.message;
+                    }
+                }).error( function( error ) {
+                    $scope.errors = error;
+                });
+            }
         }
-    }])
-    .filter( 'getValueName', function() {
-        return function( value ) {
-            var values = new Array();
-            values[1] = "importante";
-            values[2] = "Normal";
-            values[3] = "No importante";
-            return values[value];
-        };
-    });
+    }]);

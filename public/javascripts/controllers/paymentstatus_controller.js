@@ -1,40 +1,12 @@
 app
-    .factory( 'PaymentStatusRepository', [ '$http', function( $http ) {
+    .factory( 'PaymentStatusRepository', [ 'CRUDService', '$http', function( CRUDService, $http ) {
+        var model = 'paymentstatus';
         return({
-            getAll : function() {
-                return $http({
-                    url : '/paymentstatus',
-                    method : 'GET'
-                });
-            },
-            add : function( data ){
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/paymentstatus',
-                    method : 'POST',
-                    data : jsonData
-                });
-            },
-            getById : function( id ) {
-                return $http({
-                    url : '/paymentstatus/' + id,
-                    method : 'GET'
-                });
-            },
-            update : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/paymentstatus/' + data.id,
-                    method : 'PUT',
-                    data : jsonData
-                });
-            },
-            remove : function( id ) {
-                return $http({
-                    url : '/paymentstatus/' + id,
-                    method : 'DELETE'
-                });
-            },
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, data ),
+            remove : ( id ) => CRUDService.remove( model, data ),
             validateData : function( data, scope ) {
                 var ban = true;
                 scope.errors = "";
@@ -98,6 +70,7 @@ app
                 });
 
                 $scope.update = function() {
+
                     if( PaymentStatusRepository.validateData( $scope.paymentstatus, $scope ) ) {
                         PaymentStatusRepository.update( $scope.paymentstatus ).success( function( data ) {
                             if( !data.error ) {
@@ -123,6 +96,7 @@ app
                 };
 
                 $scope.add = function() {
+
                     if( PaymentStatusRepository.validateData( $scope.paymentstatus, $scope ) ) {
                         PaymentStatusRepository.add( $scope.paymentstatus ).success( function( data ) {
                             if( !data.error ) {

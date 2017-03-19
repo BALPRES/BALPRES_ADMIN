@@ -1,6 +1,12 @@
 app
-    .controller( 'reservation-controller', [ '$scope', function( $scope ) {
+    .controller( 'reservation-controller', [    '$scope',
+                                                'AuthRepository',
+                                                function(   $scope,
+                                                            AuthRepository  ) {
 
-        $scope.title = "Reservación";
-        
+        if( AuthRepository.viewVerification() ) {
+            $scope.title = "Reservación";
+            
+        }
+
     }]);

@@ -18,7 +18,7 @@
     </div>
 
     <hr>
-    
+
     <div class="row" id="recipt" >
         <div class="col-md-12">
             <div class="alert alert-danger" role="alert" ng-if="errors">
@@ -68,16 +68,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="t in tasks_todo">
+                    <tr ng-repeat="t in todo">
                         <td>
                             <div class="card card-outline-info">
                                 <div class="card-header">
-                                    {{t.value|getValueName}}  [<a href="#">Borrar</a>]
+                                    {{t.value|getValueName}}
                                 </div>
                                 <div class="card-block">
                                     <blockquote class="card-blockquote">
                                         <p>{{t.name}}</p>
                                         <p>{{t.description}}</p>
+                                        <p>[<a href="" ng-click="task_doing( t )"><i class="fa fa-clock-o" aria-hidden="true"></i> En Proceso</a> | <a href="" ng-click="task_done( t )"><i class="fa fa-check-circle" aria-hidden="true"></i> Hecha</a>]</p>
                                         <footer>Límite <cite title="Source Title"><b>{{t.date_end|dateTimeFilter}}</b></cite></footer>
                                     </blockquote>
                                 </div>
@@ -95,16 +96,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="t in tasks_doing">
+                    <tr ng-repeat="t in doing">
                         <td>
                             <div class="card card-outline-info">
                                 <div class="card-header">
-                                    {{t.value|getValueName}}  [<a href="#">Borrar</a>]
+                                    {{t.value|getValueName}}
                                 </div>
                                 <div class="card-block">
                                     <blockquote class="card-blockquote">
                                         <p>{{t.name}}</p>
                                         <p>{{t.description}}</p>
+                                        <p>[<a href="" ng-click="task_todo( t )"><i class="fa fa-times-circle" aria-hidden="true"></i> Pendiente</a> | <a href="" ng-click="task_done( t )"><i class="fa fa-check-circle" aria-hidden="true"></i> Hecha</a>]</p>
                                         <footer>Límite <cite title="Source Title"><b>{{t.date_end|dateTimeFilter}}</b></cite></footer>
                                     </blockquote>
                                 </div>
@@ -122,16 +124,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="t in tasks_done">
+                    <tr ng-repeat="t in done">
                         <td>
                             <div class="card card-outline-info">
                                 <div class="card-header">
-                                    {{t.value|getValueName}}  [<a href="#">Borrar</a>]
+                                    {{t.value|getValueName}}
                                 </div>
                                 <div class="card-block">
                                     <blockquote class="card-blockquote">
                                         <p>{{t.name}}</p>
                                         <p>{{t.description}}</p>
+                                        <p>[<a href="" ng-click="task_todo( t )"><i class="fa fa-times-circle" aria-hidden="true"></i> Pendiente</a> | <a href="" ng-click="task_doing( t )"><i class="fa fa-clock-o" aria-hidden="true"></i> En Proceso</a>]</p>
                                         <footer>Límite <cite title="Source Title"><b>{{t.date_end|dateTimeFilter}}</b></cite></footer>
                                     </blockquote>
                                 </div>

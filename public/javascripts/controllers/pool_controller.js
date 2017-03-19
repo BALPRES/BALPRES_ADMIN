@@ -1,40 +1,12 @@
 app
-    .factory( 'PoolRepository', [ '$http', function( $http ) {
+    .factory( 'PoolRepository', [ 'CRUDService', function( CRUDService ) {
+        var model = 'pool';
         return({
-            getAll : function(  ) {
-                return $http({
-                    url : '/pool',
-                    method : 'GET'
-                });
-            },
-            add : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/pool',
-                    method : 'POST',
-                    data : jsonData
-                });
-            },
-            getById : function( id ) {
-                return $http({
-                    url : '/pool/' + id,
-                    method : 'GET'
-                });
-            },
-            update : function( data ) {
-                var jsonData = JSON.stringify(data);
-                return $http({
-                    url : '/pool/' + data.id,
-                    method : 'PUT',
-                    data : jsonData
-                });
-            },
-            remove : function( id ) {
-                return $http({
-                    url : '/pool/' + id,
-                    method : 'DELETE'
-                });
-            },
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, data ),
+            remove : ( id ) => CRUDService.remove( model, data ),
             validateData : function( data, scope ) {
                 var ban = false;
                 scope.errors = "";

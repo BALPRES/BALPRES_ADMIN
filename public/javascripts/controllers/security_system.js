@@ -1,23 +1,11 @@
 app
     .factory( 'AuthRepository', [ '$http', '$cookies', '$location', '$rootScope', function( $http, $cookies, $location, $rootScope ) {
         return {
-            login : function( username, password ) {
-                var jsonData = JSON.stringify({
-                    username : username,
-                    password : password
-                });
-                return $http({
-                    method : 'POST',
-                    url : 'auth/login/',
-                    data : jsonData
-                });
-            },
-            logout : function( ) {
-                return $http({
-                    method : 'POST',
-                    url : 'auth/logout'
-                });
-            },
+            login : ( username, password ) => $http.post( 'auth/login/', JSON.stringify( { username : username, password : password } ) ),
+            logout : () => $http.post( 'auth/logout' ),
+            removeSession : () => { $cookies.remove( 'userdata' ) },
+            getFullAuthData : () => this.getSession().auth_data,
+            getUserCat : () => $http.get( 'auth/usercat/' ),
             isSessionSet : function() {
                 var userCookie = $cookies.get('userdata');
                 return ( userCookie == undefined ) ? false : true;
@@ -26,20 +14,7 @@ app
                 var userCookie = $cookies.get('userdata');
                 return ( userCookie == undefined ) ? undefined : JSON.parse(userCookie);
             },
-            removeSession : function() {
-                $cookies.remove( 'userdata' );
-            },
-            getFullAuthData : function(){
-                return this.getSession().auth_data;
-            },
-            getFullJSONHeader : function(){
-                return({
-                    'Content-Type' : 'application/json',
-                    'Authorization' : this.getFullAuthData()
-                });
-            },
             viewVerification : function() {
-
                 if( !this.isSessionSet() ) {
                     $rootScope.isLoggedIn.show_app = false;
                     $rootScope.isLoggedIn.show_auth = true;
@@ -50,126 +25,119 @@ app
                     $rootScope.isLoggedIn.show_auth = false;
                     return true;
                 }
-
-            },
-            getUserCat : function() {
-                return $http({
-                    url : 'auth/usercat/',
-                    method : 'GET'
-                });
             },
             setMenu : function() {
                 $rootScope.snd_menu_items = {
-                    general : {
-                        overview : {
+                    general : [
+                        {
                             name : 'Overview',
                             icon : 'fa fa-eye',
                             status : 'active',
                             link : '#/overview'
                         },
-                        tasks_super_admin : {
+                        {
                             name : 'Tareas',
                             icon : 'fa fa-calendar-check-o',
                             status : '',
                             link : '#/tasks_super_admin'
                         },
-                        tasks_admin : {
+                        {
                             name : 'Tareas',
                             icon : 'fa fa-calendar-check-o',
                             status : '',
                             link : '#/tasks_admin'
                         },
-                        tasks_general : {
+                        {
                             name : 'Tareas',
                             icon : 'fa fa-calendar-check-o',
                             status : '',
                             link : '#/tasks_general'
                         }
-                    },
-                    objects : {
-                        cabains : {
+                    ],
+                    objects : [
+                        {
                             name : 'Cabañas',
                             icon : 'fa fa-bed',
                             status : '',
                             link : '#/cabins'
                         },
-                        pools : {
+                        {
                             name : 'Albercas',
                             icon : 'fa fa-bath',
                             status : '',
                             link : '#/pools'
                         },
-                        areas : {
+                        {
                             name : 'Áreas',
                             icon : 'fa fa-puzzle-piece',
                             status : '',
                             link : '#/areas'
                         }
-                    },
-                    sales : {
-                        pos : {
+                    ],
+                    sales : [
+                        {
                             name : 'Punto de venta',
                             icon : 'fa fa-credit-card',
                             status : '',
                             link : '#/reservations'
                         },
-                        sales : {
+                        {
                             name : 'Ventas',
                             icon : 'fa fa-money',
                             status : '',
                             link : '#/sales'
                         },
-                        reports : {
+                        {
                             name : 'Reportes',
                             icon : 'fa fa-bar-chart',
                             status : '',
                             link : '#/reports'
                         }
-                    },
-                    settings : {
-                        areatypes : {
+                    ],
+                    settings : [
+                        {
                             name : 'Tipos de Área',
                             icon : 'fa fa-list-alt',
                             status : '',
                             link : '#/areatypes'
                         },
-                        cabintypes : {
+                        {
                             name : 'Tipos de Cabaña',
                             icon : 'fa fa-list-alt',
                             status : '',
                             link : '#/cabintypes'
                         },
-                        reservationtypes : {
+                        {
                             name : 'Tipos de Reservación',
                             icon : 'fa fa-list-alt',
                             status : '',
                             link : '#/reservationtypes'
                         },
-                        paymentstatus : {
+                        {
                             name : 'Estatus de Pagos',
                             icon : 'fa fa-list-alt',
                             status : '',
                             link : '#/paymentstatus'
                         },
-                        contents : {
+                        {
                             name : 'Contenidos',
                             icon : 'fa fa-align-left',
                             status : '',
                             link : '#/contents'
                         },
-                        promotions : {
+                        {
                             name : 'Promociones',
                             icon : 'fa fa-align-left',
                             status : '',
                             link : '#/promotions'
                         },
-                        site : {
+                        {
                             name : 'Sitio',
                             icon : 'fa fa-globe',
                             status : '',
                             link : 'http://balneariolaspalmas.co/'
                         }
-                    }
+                    ]
                 };
 
                 var session_o = this.getSession();
@@ -177,33 +145,46 @@ app
                 if( session_o ) {
                     switch (session_o.rol.value) {
                         case 1:
-                            delete $rootScope.snd_menu_items.general.tasks_admin;
-                            delete $rootScope.snd_menu_items.general.tasks_general;
+                            delete $rootScope.snd_menu_items.general[2];
+                            delete $rootScope.snd_menu_items.general[3];
                             break;
                         case 2:
-                            delete $rootScope.snd_menu_items.general.tasks_super_admin;
-                            delete $rootScope.snd_menu_items.general.tasks_general;
-                            delete $rootScope.snd_menu_items.settings.areatypes;
-                            delete $rootScope.snd_menu_items.settings.cabintypes;
-                            delete $rootScope.snd_menu_items.settings.paymentstatus;
-                            delete $rootScope.snd_menu_items.settings.reservationtypes;
+                            delete $rootScope.snd_menu_items.general[2];
+                            delete $rootScope.snd_menu_items.general[3];
+                            delete $rootScope.snd_menu_items.settings[0];
+                            delete $rootScope.snd_menu_items.settings[1];
+                            delete $rootScope.snd_menu_items.settings[2];
+                            delete $rootScope.snd_menu_items.settings[3];
+                            $rootScope.snd_menu_items.settings.length-=4;
                             break;
                         case 3:
-                            delete $rootScope.snd_menu_items.general.tasks_super_admin;
-                            delete $rootScope.snd_menu_items.general.tasks_admin;
+                            delete $rootScope.snd_menu_items.general[1];
+                            delete $rootScope.snd_menu_items.general[3];
                             delete $rootScope.snd_menu_items.objects;
                             delete $rootScope.snd_menu_items.settings;
-                            delete $rootScope.snd_menu_items.sales.reports;
+                            delete $rootScope.snd_menu_items.sales[2];
+                            $rootScope.snd_menu_items.sales.length--;
                             break;
                     }
+                    $rootScope.snd_menu_items.general.length = 2;
                 }
             },
-            testTest : function() {
-                return true;
+            setActiveMenu : function( element ) {
+                $rootScope.snd_menu_items.general.forEach( e => e.status = '' );
+                $rootScope.snd_menu_items.sales.forEach( e => e.status = '' );
+
+                if( $rootScope.snd_menu_items.settings ) {
+                    $rootScope.snd_menu_items.settings.forEach( e => e.status = '' );
+                }
+                if( $rootScope.snd_menu_items.objects ) {
+                    $rootScope.snd_menu_items.objects.forEach( e => e.status = '' );
+                }
+
+                element.status = 'active';
             }
         }
     }])
-    .controller( 'auth-controller', [ '$scope', '$rootScope', 'AuthRepository', function( $scope, $rootScope, AuthRepository ) {
+    .controller( 'auth-controller', [ '$scope', '$location', '$rootScope', 'AuthRepository', function( $scope, $location, $rootScope, AuthRepository ) {
 
         $scope.login = function() {
             AuthRepository.login( $scope.username, $scope.password ).success( function( data ) {
@@ -211,11 +192,12 @@ app
                     $scope.errors = data.message;
                 } else {
                     $scope.message = data.message;
-                    AuthRepository.viewVerification();
+                    $rootScope.user_info = AuthRepository.getSession();
                     AuthRepository.setMenu();
+                    $location.path( '/overview' );
                 }
             }).error( function( error ) {
-                console.log( error );
+                $scope.errors = error;
             });
         };
     }]);

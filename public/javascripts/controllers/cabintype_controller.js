@@ -1,39 +1,21 @@
 app
-    .factory( 'CabinTypeRepository', [ '$http', function( $http ) {
+    .factory( 'CabinTypeRepository', [ 'CRUDService', function( CRUDService ) {
+        var model = "cabintype";
         return({
             getAll : function(  ) {
-                return $http({
-                    url : '/cabintype',
-                    method : 'GET'
-                });
+                return CRUDService.getAll( model );
             },
             add : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/cabintype',
-                    method : 'POST',
-                    data : jsonData
-                });
+                return CRUDService.add( model, data );
             },
             getById : function( id ) {
-                return $http({
-                    url : '/cabintype/' + id,
-                    method : 'GET'
-                });
+                return CRUDService.getById( model, id );
             },
             update : function( data ) {
-                var jsonData = JSON.stringify(data);
-                return $http({
-                    url : '/cabintype/' + data.id,
-                    method : 'PUT',
-                    data : jsonData
-                });
+                return CRUDService.update( model, data );
             },
             remove : function( id ) {
-                return $http({
-                    url : '/cabintype/' + id,
-                    method : 'DELETE'
-                });
+                return CRUDService.remove( model, id );
             },
             validateData : function( data, scope ) {
                 var ban = true;
@@ -78,26 +60,31 @@ app
                         $mdDialog,
                         CabinTypeRepository,
                         AuthRepository ) {
-
+        // If user is logged in
         if( AuthRepository.viewVerification() ) {
-
+            // title of the view
             $scope.title = "Tipo de cabaña";
-
+            /**
+            * Gets all the elements of the model on the repository
+            ***/
             var allCabinTypes = function() {
                 CabinTypeRepository.getAll().success( function( data ) {
                     if (!data.error) {
                         var the_data = data.data;
                         $scope.cabintypes = the_data.data;
+                        $scope.cabintypes_table = $scope.cabintypes;
                     } else {
                         $scope.errors = data.message;
                     }
                 }).error( function( error ) {
-                    console.log( error );
+                    $scope.errors = error;
                 });
             };
-
+            // If there is an id on the url
             if( $routeParams.id ) {
-
+                /**
+                * gets element by id
+                **/
                 CabinTypeRepository.getById( $routeParams.id ).success( function( data ) {
                     if( !data.error ) {
                         $scope.cabintype = data.data;
@@ -108,6 +95,10 @@ app
                     $scope.errors = error;
                 });
 
+                /**
+                * updates the model on the repository
+                * then goes to the detail of itself
+                **/
                 $scope.update = function() {
                     if( CabinTypeRepository.validateData( $scope.cabintype, $scope ) ) {
                         CabinTypeRepository.update( $scope.cabintype ).success( function( data ) {
@@ -124,9 +115,10 @@ app
                 };
 
             } else {
-
+                // Get all data for listing
                 allCabinTypes();
 
+                // init model
                 $scope.cabintype = {
                     name : "",
                     description : "",
@@ -135,6 +127,10 @@ app
                     max_extra_guests : 0
                 };
 
+                /**
+                * Add element to repository
+                * then returns to listing
+                **/
                 $scope.add = function() {
 
                     if( CabinTypeRepository.validateData( $scope.cabintype, $scope ) ) {
@@ -152,13 +148,16 @@ app
                 };
 
                 $scope.searchChange = function() {
-                    console.log( $scope.search_text );
+                    $scope.cabintypes_table = $scope.cabintypes.filter( c => c.name.includes( $scope.search_text ) || c.description.includes( $scope.search_text ) );
                 };
 
             }
 
+            /**
+            * Delete modal
+            * shows modal to confirm deleting row
+            **/
             $scope.delete = function( e, id ){
-
                 var confirm = $mdDialog.confirm()
                     .title('¿Desea borrar el registro?')
                     .textContent("Después de borrar esto no podrá ser recuperado.")

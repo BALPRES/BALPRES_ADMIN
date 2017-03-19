@@ -93,6 +93,46 @@ router.post( '/cabin/', jsonParser, function( req, res ) {
 });
 
 /**
+* change payment status
+**/
+router.put( '/cabin/paymentstatus/:id', jsonParser, function( req, res ) {
+
+    var id = req.params.id,
+        userdata = JSON.parse( req.cookies[ 'userdata' ] );
+
+    request(
+        {
+            url : http_helper.get_api_uri( 'reservation/cabin/paymentstatus/', id ),
+            method : 'PUT',
+            json : true,
+            headers : {
+                'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
+            }
+        },
+        function( error, response, body ) {
+            switch( response.statusCode ) {
+                case 200 :
+                    var data_from_server = encryption_system.decryptLongJSON( body );
+                    var jsonData = JSON.stringify({
+                        error : false,
+                        data : data_from_server.data
+                    });
+                    res.send( jsonData );
+                    break;
+                default :
+                    var data_from_server = encryption_system.decryptLongJSON( body );
+                    var jsonData = JSON.stringify({
+                        error : true,
+                        message : data_from_server.message
+                    });
+                    res.send( jsonData );
+                    break;
+            }
+        }
+    );
+});
+
+/**
 * reservation retrieve pettition
 **/
 router.get( '/cabin/:id', jsonParser, function( req, res ) {

@@ -1,40 +1,12 @@
 app
-    .factory( 'PromotionRepository', [ '$http', function( $http ) {
+    .factory( 'PromotionRepository', [ 'CRUDService', function( CRUDService ) {
+        var model = 'promotion';
         return({
-            getAll : function() {
-                return $http({
-                    url : '/promotion',
-                    method : 'GET'
-                });
-            },
-            add : function( data ){
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/promotion',
-                    method : 'POST',
-                    data : jsonData
-                });
-            },
-            getById : function( id ) {
-                return $http({
-                    url : '/promotion/' + id,
-                    method : 'GET'
-                });
-            },
-            update : function( data ) {
-                var jsonData = JSON.stringify( data );
-                return $http({
-                    url : '/promotion/' + data.id,
-                    method : 'PUT',
-                    data : jsonData
-                });
-            },
-            remove : function( id ) {
-                return $http({
-                    url : '/promotion/' + id,
-                    method : 'DELETE'
-                });
-            },
+            getAll : () => CRUDService.getAll( model ),
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, data ),
+            remove : ( id ) => CRUDService.remove( model, data ),
             validateData : function( data, scope ) {
                 var ban = true;
                 scope.errors = "";

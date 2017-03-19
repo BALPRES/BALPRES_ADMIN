@@ -1,49 +1,23 @@
 app
-    .factory( 'ReservationCabinRepository', [ '$http', function( $http ) {
+    .factory( 'ReservationCabinRepository', [ 'CRUDService', '$http', function( CRUDService, $http ) {
+        var model = 'reservation/cabin';
         return({
-            getAll : function( calendar ) {
+            getAll : ( calendar ) => {
                 var date_1 = calendar.date_start.getFullYear() + '-' + ( calendar.date_start.getMonth() + 1 ) + '-' + calendar.date_start.getDate(),
                     date_2 = calendar.date_end.getFullYear() + '-' + ( calendar.date_end.getMonth() + 1 ) + '-' + calendar.date_end.getDate();
-                return $http({
-                    url : '/reservation/cabin?d1=' + date_1 + '&d2=' + date_2,
-                    method : 'GET'
-                });
+                return $http.get( '/reservation/cabin?d1=' + date_1 + '&d2=' + date_2 );
             },
-            add : function( data ) {
-                return $http({
-                    url : '/reservation/cabin',
-                    method : 'POST',
-                    data : JSON.stringify( data )
-                });
-            },
-            getById : function( id ) {
-                return $http({
-                    url : '/reservation/cabin/' + id,
-                    method : 'GET'
-                });
-            },
-            update : function( data ) {
-                return $http({
-                    url : '/reservation/' + data.id,
-                    method : 'PUT',
-                    data : JSON.stringify( data )
-                });
-            },
-            remove : function( id ) {
-                return $http({
-                    url : '/reservation/cabin/' + id,
-                    method : 'DELETE'
-                });
-            },
-            getCabinsByDate : function( data ) {
+            add : ( data ) => CRUDService.add( model, data ),
+            getById : ( id ) => CRUDService.getById( model, id ),
+            update : ( data ) => CRUDService.update( model, id ),
+            remove : ( id ) => CRUDService.remove( model, id ),
+            pay : ( id ) => $http.put( 'reservation/cabin/paymentstatus/' + id ),
+            getCabinsByDate : ( data ) => {
                 var date_1 = data.date_start.getFullYear() + '-' + ( data.date_start.getMonth() + 1 ) + '-' + data.date_start.getDate(),
                     date_2 = data.date_end.getFullYear() + '-' + ( data.date_end.getMonth() + 1 ) + '-' + data.date_end.getDate();
-                return $http({
-                    url : '/reservation/cabins?d1=' + date_1 + '&d2=' + date_2,
-                    method : 'GET'
-                });
+                return $http.get( '/reservation/cabins?d1=' + date_1 + '&d2=' + date_2 );
             },
-            validateReservationInfo : function( data, scope ) {
+            validateReservationInfo : ( data, scope ) => {
                 var ban = true;
                 scope.errors = "";
                 if( data.full_name.length == 0 || data.full_name.length > 200 ) {
@@ -234,7 +208,7 @@ app
                 /* config object */
                 $scope.uiConfig = {
                     calendar:{
-                        height: 450,
+                        height: 500,
                         editable: false,
                         header:{
                             left: 'title',
@@ -344,7 +318,31 @@ app
                         });
                     }, null );
                 };
+
             }
+
+            $scope.pay = function( e, id ) {
+                var confirm = $mdDialog.confirm()
+                    .title('¿Desea cambiar el registro a pagado?')
+                    .textContent("Después de cambiar el registro no se podrá regresar el estado.")
+                    .ariaLabel('Lucky day')
+                    .targetEvent(e)
+                    .ok('Marcar Reservación como Pagada')
+                    .cancel('Cancelar');
+
+                $mdDialog.show(confirm).then(function() {
+                    ReservationCabinRepository.pay( id ).success( function( data ) {
+                        if( !data.error ) {
+                            alert( data.data );
+                            $location.path( "/reservations/cabin" );
+                        } else {
+                            $scope.errors = data.message;
+                        }
+                    }).error( function(error) {
+                        $scope.errors =  "Ha habido un error.";
+                    });
+                }, null );
+            };
         }
 
     }]);

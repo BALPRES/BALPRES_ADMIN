@@ -1,70 +1,35 @@
 app
-    .factory( 'ContentsRepository', [ '$http', function( $http ) {
+    .factory( 'ContentsRepository', [ 'CRUDService', function( CRUDService ) {
         return({
             getOurCompanyContents : function(){
-                return $http({
-                    method : 'GET',
-                    url : 'contents/ourcompanycontent/'
-                });
+                return CRUDService.getBunch( 'contents/ourcompanycontent' );
             },
             getOurServicesContents : function() {
-                return $http({
-                    method : 'GET',
-                    url : 'contents/ourservicescontent/'
-                });
+                return CRUDService.getBunch( 'contents/ourservicescontent' );
             },
             getRecomendationsContents : function() {
-                return $http({
-                    method : 'GET',
-                    url : 'contents/recomendations/'
-                });
+                return CRUDService.getBunch( 'contents/recomendations' );
             },
             getOurPersonalContents : function() {
-                return $http({
-                    method : 'GET',
-                    url : 'contents/ourpersonalcontent/'
-                });
+                return CRUDService.getBunch( 'contents/ourpersonalcontent' );
             },
             getOurProductsContents : function() {
-                return $http({
-                    method : 'GET',
-                    url : 'contents/ourproductscontent/'
-                });
+                return CRUDService.getBunch( 'contents/ourproductscontent' );
             },
             editOurCompanyContent : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : 'contents/ourcompanycontent/',
-                    data : JSON.stringify( data )
-                });
+                return CRUDService.updateBunch( 'contents/ourcompanycontent', data );
             },
             editOurServicesContent : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : 'contents/ourservicescontent/',
-                    data : JSON.stringify( data )
-                });
+                return CRUDService.updateBunch( 'contents/ourservicescontent', data );
             },
             editRecomendationsContent : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : 'contents/recomendations/',
-                    data : JSON.stringify( data )
-                });
+                return CRUDService.updateBunch(  'contents/recomendations', data );
             },
             editOurPersonalContent : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : 'contents/ourpersonalcontent/',
-                    data : JSON.stringify( data )
-                });
+                return CRUDService.updateBunch( 'contents/ourpersonalcontent', data );
             },
             editOurProductsContent : function( data ) {
-                return $http({
-                    method : 'PUT',
-                    url : 'contents/ourproductscontent/',
-                    data : JSON.stringify( data )
-                });
+                return CRUDService.updateBunch( 'contents/ourproductscontent', data );
             }
         });
     }])
@@ -80,6 +45,7 @@ app
                                     AuthRepository,
                                     ImageRepository ) {
         if( AuthRepository.viewVerification() ) {
+
             $scope.title = "Contenidos del sitio";
             $scope.icons = [
                 "fa fa-cog",

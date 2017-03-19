@@ -1,4 +1,15 @@
-var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial', 'ng-fusioncharts', 'ui.router', 'ui.calendar', 'ui.bootstrap', 'image-service', 'document-service', 'naif.base64' ] )
+var app = angular.module( 'BALPRES-ADMIN', [    'ngRoute',
+                                                'ngCookies',
+                                                'ngMaterial',
+                                                'warrior-filters',
+                                                'ng-fusioncharts',
+                                                'ui.router',
+                                                'ui.calendar',
+                                                'ui.bootstrap',
+                                                'crud-service',
+                                                'image-service',
+                                                'document-service',
+                                                'naif.base64' ] )
     .run( [ '$rootScope', '$location', 'AuthRepository', function( $rootScope, $location, AuthRepository ) {
         $rootScope.isLoggedIn = {
             show_app : true,
@@ -16,7 +27,7 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
     .config([ '$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ) {
         $routeProvider
             .when( '/', {
-                templateUrl : '../views/main.html'
+                templateUrl : '../views/overview.html'
             })
             .when( '/overview', {
                 templateUrl : '../views/overview.html'
@@ -197,12 +208,18 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
             .when( '/contents/', {
                 templateUrl : '../views/website/contents.html'
             })
+            // reports
+            .when( '/sales/', {
+                templateUrl : '../views/reports/sales.html'
+            })
+            .when( '/reports/', {
+                templateUrl : '../views/reports/reports.html'
+            })
             .otherwise({
                 redirectTo : '/404'
             });
     }])
     .controller( 'navbar-controller', [ '$scope', '$rootScope', 'AuthRepository', function( $scope, $rootScope, AuthRepository ) {
-
         $scope.project_name = "BALPRES-ADMIN";
         $rootScope.user_info = AuthRepository.getSession();
         $scope.logout = function() {
@@ -213,63 +230,14 @@ var app = angular.module( 'BALPRES-ADMIN', [ 'ngRoute', 'ngCookies', 'ngMaterial
                 $scope.errors = error;
             });
         };
-
     }])
     .controller( 'menu-cotroller', [ '$scope', '$rootScope', 'AuthRepository', function( $scope, $rootScope, AuthRepository ) {
         AuthRepository.setMenu();
+        $scope.set_menu_state = function( element ) {
+            AuthRepository.setActiveMenu( element );
+        };
     }])
     .controller( 'main-controller', [ '$scope', function( $scope ) {
         $scope.title = "Main View";
         $scope.message = "This is a message!";
-    }])
-    .filter( 'dateTimeFilter', function() {
-        return function( date ) {
-            var d = new Date( date );
-            var month = new Array();
-            month[0] = "Enero";
-            month[1] = "Febrero";
-            month[2] = "Marzo";
-            month[3] = "Abril";
-            month[4] = "Mayo";
-            month[5] = "Junio";
-            month[6] = "Julio";
-            month[7] = "Agosto";
-            month[8] = "Septiembre";
-            month[9] = "Octubre";
-            month[10] = "Noviembre";
-            month[11] = "Diciembre";
-            return d.getDate() + " " + month[d.getMonth()] + " " + d.getFullYear() + " " + ( d.getHours() < 10 ? ("0"+d.getHours()) : d.getHours() ) + ":" + (d.getMinutes()<10?("0"+d.getMinutes()):d.getMinutes());
-        };
-    })
-    .filter( 'dateFilter', function() {
-        return function( date ) {
-            var d = new Date( date );
-            var month = new Array();
-            month[0] = "Enero";
-            month[1] = "Febrero";
-            month[2] = "Marzo";
-            month[3] = "Abril";
-            month[4] = "Mayo";
-            month[5] = "Junio";
-            month[6] = "Julio";
-            month[7] = "Agosto";
-            month[8] = "Septiembre";
-            month[9] = "Octubre";
-            month[10] = "Noviembre";
-            month[11] = "Diciembre";
-            return ( d.getDate() + 1 ) + " " + month[d.getMonth()] + " " + d.getFullYear();
-        };
-    })
-    .directive('stringToNumber', function() {
-        return {
-            require: 'ngModel',
-            link: function(scope, element, attrs, ngModel) {
-                ngModel.$parsers.push(function(value) {
-                    return '' + value;
-                });
-                ngModel.$formatters.push(function(value) {
-                    return parseFloat(value);
-                });
-            }
-        };
-    });
+    }]);
