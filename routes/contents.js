@@ -13,9 +13,7 @@ var jsonParser = bodyParser.json();
 * get our company contents
 **/
 router.get( '/ourcompanycontent', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourcompanycontent/', '' ),
@@ -25,28 +23,7 @@ router.get( '/ourcompanycontent', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -54,40 +31,18 @@ router.get( '/ourcompanycontent', jsonParser, function( req, res ) {
 * edit our company contents
 **/
 router.put( '/ourcompanycontent', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourcompanycontent/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -95,9 +50,7 @@ router.put( '/ourcompanycontent', jsonParser, function( req, res ) {
 * get our services contents
 **/
 router.get( '/ourservicescontent', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourservicescontent/', '' ),
@@ -107,28 +60,7 @@ router.get( '/ourservicescontent', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -136,40 +68,18 @@ router.get( '/ourservicescontent', jsonParser, function( req, res ) {
 * edit our services content
 **/
 router.put( '/ourservicescontent', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourservicescontent/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -177,9 +87,7 @@ router.put( '/ourservicescontent', jsonParser, function( req, res ) {
 * get recomendations contents
 **/
 router.get( '/recomendations', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/recomendations/', '' ),
@@ -189,28 +97,7 @@ router.get( '/recomendations', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -218,40 +105,18 @@ router.get( '/recomendations', jsonParser, function( req, res ) {
 * edit recomendations content
 **/
 router.put( '/recomendations', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/recomendations/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -259,9 +124,7 @@ router.put( '/recomendations', jsonParser, function( req, res ) {
 * get our personal contents
 **/
 router.get( '/ourpersonalcontent', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourpersonalcontent/', '' ),
@@ -271,28 +134,7 @@ router.get( '/ourpersonalcontent', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -300,40 +142,18 @@ router.get( '/ourpersonalcontent', jsonParser, function( req, res ) {
 * edit our personal content
 **/
 router.put( '/ourpersonalcontent', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourpersonalcontent/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -341,9 +161,7 @@ router.put( '/ourpersonalcontent', jsonParser, function( req, res ) {
 * get our products contents
 **/
 router.get( '/ourproductscontent', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourproductscontent/', '' ),
@@ -353,28 +171,7 @@ router.get( '/ourproductscontent', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -382,40 +179,18 @@ router.get( '/ourproductscontent', jsonParser, function( req, res ) {
 * edit our products content
 **/
 router.put( '/ourproductscontent', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'website/ourproductscontent/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 

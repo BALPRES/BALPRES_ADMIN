@@ -50,8 +50,7 @@ app
             var allAreaTypes = function() {
                 AreaTypeRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.areatypes = the_data.data;
+                        $scope.areatypes = data.data;
                     } else {
                         $scope.errors = data.message;
                     }

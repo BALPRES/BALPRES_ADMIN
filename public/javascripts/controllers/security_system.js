@@ -145,28 +145,20 @@ app
                 if( session_o ) {
                     switch (session_o.rol.value) {
                         case 1:
-                            delete $rootScope.snd_menu_items.general[2];
-                            delete $rootScope.snd_menu_items.general[3];
+                            $rootScope.snd_menu_items.general.splice( 2, 2 );
                             break;
                         case 2:
-                            delete $rootScope.snd_menu_items.general[2];
-                            delete $rootScope.snd_menu_items.general[3];
-                            delete $rootScope.snd_menu_items.settings[0];
-                            delete $rootScope.snd_menu_items.settings[1];
-                            delete $rootScope.snd_menu_items.settings[2];
-                            delete $rootScope.snd_menu_items.settings[3];
-                            $rootScope.snd_menu_items.settings.length-=4;
+                            $rootScope.snd_menu_items.general.splice( 1, 1 );
+                            $rootScope.snd_menu_items.general.splice( 2, 1 );
+                            $rootScope.snd_menu_items.settings.splice( 0, 4 );
                             break;
                         case 3:
-                            delete $rootScope.snd_menu_items.general[1];
-                            delete $rootScope.snd_menu_items.general[3];
-                            delete $rootScope.snd_menu_items.objects;
-                            delete $rootScope.snd_menu_items.settings;
-                            delete $rootScope.snd_menu_items.sales[2];
-                            $rootScope.snd_menu_items.sales.length--;
+                            $rootScope.snd_menu_items.general.splice( 1, 2 );
+                            $rootScope.snd_menu_items.sales.splice( 2, 1 );
+                            $rootScope.snd_menu_items.settings.length = 0;
+                            $rootScope.snd_menu_items.objects.length = 0;
                             break;
                     }
-                    $rootScope.snd_menu_items.general.length = 2;
                 }
             },
             setActiveMenu : function( element ) {

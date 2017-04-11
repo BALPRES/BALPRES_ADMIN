@@ -62,8 +62,7 @@ app
             var allPools = function() {
                 PoolRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.pools = the_data.data;
+                        $scope.pools = data.data;
                     } else {
                         $scope.errors = data.message;
                     }

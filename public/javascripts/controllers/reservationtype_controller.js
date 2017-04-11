@@ -48,8 +48,7 @@ app
             var getAllReservationTypes = function() {
                 ReservationTypeRepository.getAll().success( function( data ) {
                     if( !data.error ) {
-                        var the_data = data.data;
-                        $scope.reservationtypes = the_data.data;
+                        $scope.reservationtypes = data.data;
                     } else {
                         $scope.errors = data.message;
                     }

@@ -64,8 +64,7 @@ app
             var allAreas = function() {
                 AreaRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.areas = the_data.data;
+                        $scope.areas = data.data;
                     } else {
                         $scope.errors = data.message;
                     }
@@ -77,8 +76,7 @@ app
             var allAreaTypes = function() {
                 AreaTypeRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.areatypes = the_data.data;
+                        $scope.areatypes = data.data;
                     } else {
                         $scope.errors = data.message;
                     }
@@ -90,8 +88,7 @@ app
             var allPools = function() {
                 PoolRepository.getAll().success( function( data ) {
                     if( !data.error ) {
-                        var the_data = data.data;
-                        $scope.pools = the_data.data;
+                        $scope.pools = data.data;
                     } else {
                         $scope.errors = data.message;
                     }
@@ -104,14 +101,12 @@ app
 
                 PoolRepository.getAll().success( function( data ) {
                     if( !data.error ) {
-                        var the_data = data.data;
-                        $scope.pools = the_data.data;
+                        $scope.pools = data.data;
                         AreaTypeRepository.getAll().success( function( d1 ) {
 
                             if( !d1.error ) {
 
-                                var the_data = d1.data;
-                                $scope.areatypes = the_data.data;
+                                $scope.areatypes = d1.data.data;
 
                                 AreaRepository.getById( $routeParams.id ).success( function( d2 ) {
                                     if( !d2.error ) {

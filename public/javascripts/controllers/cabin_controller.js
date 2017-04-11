@@ -66,8 +66,7 @@ app
             var allCabins = function() {
                 CabinRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.cabins = the_data.data;
+                        $scope.cabins = data.data;
                         $scope.cabins_table = $scope.cabins;
                     } else {
                         $scope.errors = data.message;
@@ -80,8 +79,7 @@ app
             var allCabinTypes = function() {
                 CabinTypeRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.cabintypes = the_data.data;
+                        $scope.cabintypes = data.data;
                     } else {
                         $scope.errors = data.message;
                     }

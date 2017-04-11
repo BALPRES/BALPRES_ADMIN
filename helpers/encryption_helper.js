@@ -1,8 +1,8 @@
 'use strict';
 
-var fs = require( 'fs' );
-var ursa = require( 'ursa' );
-var crt, server_pub_key, client_pub_key, client_priv_key, msg;
+var fs = require( 'fs' ),
+    ursa = require( 'ursa' ),
+    crt, server_pub_key, client_pub_key, client_priv_key, msg;
 
 server_pub_key = ursa.createPublicKey( fs.readFileSync( './certs/server_rsa.pub' ) );
 client_pub_key = ursa.createPublicKey( fs.readFileSync( './certs/client_admin_balpres.pub' ) );
@@ -11,10 +11,7 @@ client_priv_key = ursa.createPrivateKey( fs.readFileSync( './certs/client_admin_
 /**
 * encrypt data sended as json format
 **/
-var encrypt_json_msg = function( data ) {
-    msg = server_pub_key.encrypt( JSON.stringify( data ), 'utf8', 'base64' );
-    return msg;
-};
+var encrypt_json_msg = ( data ) => server_pub_key.encrypt( JSON.stringify( data ), 'utf8', 'base64' );
 
 /**
 * encrypt long data
@@ -52,45 +49,31 @@ var decrypt_long_data = function( data ) {
 /**
 * decrypt data and return it as json
 **/
-var descrypt_json_msg = function( data ) {
-    msg = client_priv_key.decrypt( data, 'base64', 'utf8', ursa.RSA_PKCS1_OAEP_PADDING );
-    return JSON.parse( msg );
-};
+var descrypt_json_msg = ( data ) => JSON.parse( client_priv_key.decrypt( data, 'base64', 'utf8', ursa.RSA_PKCS1_OAEP_PADDING ) );
 
 /**
 * encrypt cookie token
 **/
-var encrypt_cookie_token = function( token ) {
-    var en_token = client_pub_key.encrypt( token, 'utf8', 'base64' );
-    return en_token;
-};
+var encrypt_cookie_token = ( token ) => client_pub_key.encrypt( token, 'utf8', 'base64' );
 
 /**
 * decrypt an encrypted cookie token
 **/
-var decrypt_cookie_token = function( en_token ) {
-    var token = client_priv_key.decrypt( en_token, 'base64', 'utf8' );
-    return token;
-};
+var decrypt_cookie_token = ( en_token ) => client_priv_key.decrypt( en_token, 'base64', 'utf8' );
 
 /**
 * encrypt with private key on the client side
 * tis will mainly be or test
 **/
-var encrypt_with_priv_test = function( data ) {
-    msg = client_pub_key.encrypt( JSON.stringify( data ), 'utf8', 'base64' );
-    return msg;
-};
+var encrypt_with_priv_test = ( data ) => client_pub_key.encrypt( JSON.stringify( data ), 'utf8', 'base64' );
 
 /**
 * decrypt with private key on the client side
 * this will mainly be for test
 **/
-var decrypt_with_priv_test = function( data ) {
-    msg = client_priv_key.decrypt( data, 'base64', 'utf8' );
-    return JSON.parse( msg );
-};
+var decrypt_with_priv_test = ( data ) => JSON.parse( client_priv_key.decrypt( data, 'base64', 'utf8' ) );
 
+// function exports
 module.exports.encryptJSON = encrypt_json_msg;
 module.exports.decryptJSON = descrypt_json_msg;
 

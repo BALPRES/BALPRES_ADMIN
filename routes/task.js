@@ -13,9 +13,7 @@ var jsonParser = bodyParser.json();
 * task list pettition
 **/
 router.get( '/', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'task/', '' ),
@@ -25,26 +23,7 @@ router.get( '/', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : encryption_system.decryptLongJSON( body ).data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : encryption_system.decryptLongJSON( body ).data
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -52,9 +31,7 @@ router.get( '/', jsonParser, function( req, res ) {
 * task create pettition
 **/
 router.post( '/', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'task/', '' ),
@@ -65,28 +42,7 @@ router.post( '/', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ){
-            switch (response.statusCode) {
-                case 400 :
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message :  encryption_system.decryptLongJSON( body ).data
-                    });
-                    res.send( jsonData );
-                    break;
-                case 201 :
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default :
-                    res.send( "Well 500 :(" );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_created( error, response, body ) ) }
     );
 });
 
@@ -94,9 +50,7 @@ router.post( '/', jsonParser, function( req, res ) {
 * task update pettition
 **/
 router.put( '/:id', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'task/', req.params.id ),
@@ -107,27 +61,7 @@ router.put( '/:id', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ){
-            switch (response.statusCode) {
-                case 400 :
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : encryption_system.decryptLongJSON( body ).message
-                    });
-                    res.send( jsonData );
-                    break;
-                case 200 :
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : encryption_system.decryptLongJSON( body ).data
-                    });
-                    res.send( jsonData );
-                    break;
-                default :
-                    res.send( "Well 500 :(" );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -135,37 +69,17 @@ router.put( '/:id', jsonParser, function( req, res ) {
 * delete task
 **/
 router.delete( '/:id', jsonParser, function( req, res ) {
-
-    var userdata = JSON.parse( req.cookies[ 'userdata' ] ),
-        id = req.params.id;
-
+    var userdata = JSON.parse( req.cookies[ 'userdata' ] );
     request(
         {
-            url : http_helper.get_api_uri( 'task/', id ),
+            url : http_helper.get_api_uri( 'task/', req.params.id ),
             method : 'DELETE',
             json : true,
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ){
-            switch (response.statusCode) {
-                case 204:
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        message : "Objecto borrado."
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : encryption_system.decryptLongJSON( body ).message
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_deleted( error, response, body ) ) }
     );
 });
 
@@ -173,9 +87,7 @@ router.delete( '/:id', jsonParser, function( req, res ) {
 * get assigned tasks
 **/
 router.get( '/assigned/', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'task/assigned/', '' ),
@@ -185,26 +97,7 @@ router.get( '/assigned/', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : encryption_system.decryptLongJSON( body ).data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : encryption_system.decryptLongJSON( body ).data
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -212,9 +105,7 @@ router.get( '/assigned/', jsonParser, function( req, res ) {
 * get tasks not done by due date
 **/
 router.get( '/notdonebydue/', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'task/notdonebydue/', '' ),
@@ -224,26 +115,7 @@ router.get( '/notdonebydue/', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : encryption_system.decryptLongJSON( body ).data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : encryption_system.decryptLongJSON( body ).data
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 

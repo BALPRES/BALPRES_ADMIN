@@ -70,8 +70,7 @@ app
             var allCabinTypes = function() {
                 CabinTypeRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.cabintypes = the_data.data;
+                        $scope.cabintypes = data.data;
                         $scope.cabintypes_table = $scope.cabintypes;
                     } else {
                         $scope.errors = data.message;

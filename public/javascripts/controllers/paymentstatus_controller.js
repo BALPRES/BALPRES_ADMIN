@@ -47,8 +47,7 @@ app
             var allPaymentStatus = function() {
                 PaymentStatusRepository.getAll().success( function( data ) {
                     if (!data.error) {
-                        var the_data = data.data;
-                        $scope.paymentstatuses = the_data.data;
+                        $scope.paymentstatuses = data.data;
                     } else {
                         $scope.errors = data.message;
                     }

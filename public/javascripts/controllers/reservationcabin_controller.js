@@ -102,8 +102,7 @@ app
                 var getCabins = function() {
                     ReservationCabinRepository.getCabinsByDate($scope.date_data).success( function( data ) {
                         if( !data.error ) {
-                            var the_data = data.data;
-                            $scope.cabins = the_data;
+                            $scope.cabins = data.data;
                             initReservation();
                         } else {
                             $scope.errors = data.message;
@@ -116,8 +115,7 @@ app
                 var getAllPromotions = function() {
                     PromotionRepository.getAll().success( function( data ) {
                         if( !data.error ) {
-                            var the_data = data.data;
-                            $scope.promotions = the_data.data;
+                            $scope.promotions = data.data;
                         } else {
                             $scope.errors = data.message;
                         }

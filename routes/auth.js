@@ -11,16 +11,12 @@ var jsonParser = bodyParser.json();
 * login function, requires username and password
 **/
 router.post( '/login', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
-    var en_data = encryption_system.encryptJSON( form_data );
-
     request(
         {
             url : http_helper.get_api_uri( 'login/', '' ),
             method : 'POST',
             json : true,
-            body : en_data,
+            body :  encryption_system.encryptJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_app_header()
             }
@@ -56,17 +52,16 @@ router.post( '/login', jsonParser, function( req, res ) {
                             message : data_from_server.message
                         }),
                         user_data = JSON.stringify({
-                            username : form_data.username,
+                            username : req.body.username,
                             full_name : data_from_server.data['full_name'],
                             rol : data_from_server.data['rol'],
-                            auth_data : encryption_system.encryptCookie( http_helper.get_user_basic_auth( form_data.username, form_data.password ) )
+                            auth_data : encryption_system.encryptCookie( http_helper.get_user_basic_auth( req.body.username, req.body.password ) )
                         });
                     res.cookie( 'userdata', user_data );
                     res.send( jsonData );
                     break;
                 default :
-                    res.send( "O_o" );
-                    console.log( body );
+                    res.send( error );
                     break;
             }
         }
@@ -89,9 +84,7 @@ router.post( '/logout', jsonParser, function( req, res ) {
 * user catalog
 **/
 router.get( '/usercat', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'usercat/', '' ),
@@ -101,28 +94,7 @@ router.get( '/usercat', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 

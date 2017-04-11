@@ -13,9 +13,7 @@ var jsonParser = bodyParser.json();
 * get alert numbers
 **/
 router.get( '/alertnumbers', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/alertnumbers/', '' ),
@@ -25,28 +23,7 @@ router.get( '/alertnumbers', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -54,9 +31,7 @@ router.get( '/alertnumbers', jsonParser, function( req, res ) {
 * get alert emails
 **/
 router.get( '/alertemails', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/alertemails/', '' ),
@@ -66,28 +41,7 @@ router.get( '/alertemails', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -95,9 +49,7 @@ router.get( '/alertemails', jsonParser, function( req, res ) {
 * get contact email
 **/
 router.get( '/contactemail', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/contactemail/', '' ),
@@ -107,28 +59,7 @@ router.get( '/contactemail', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -136,9 +67,7 @@ router.get( '/contactemail', jsonParser, function( req, res ) {
 * get ticket prices
 **/
 router.get( '/ticketprices', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/ticketprices/', '' ),
@@ -148,28 +77,7 @@ router.get( '/ticketprices', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
@@ -177,9 +85,7 @@ router.get( '/ticketprices', jsonParser, function( req, res ) {
 * get signatures
 **/
 router.get( '/signatures', jsonParser, function( req, res ) {
-
     var userdata = JSON.parse( req.cookies[ 'userdata' ] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/signatures/', '' ),
@@ -189,218 +95,87 @@ router.get( '/signatures', jsonParser, function( req, res ) {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            if( response ) {
-                switch (response.statusCode) {
-                    case 200:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : false,
-                            data : data_from_server.data
-                        });
-                        res.send( jsonData );
-                        break;
-                    default:
-                        var data_from_server = encryption_system.decryptLongJSON( body );
-                        var jsonData = JSON.stringify({
-                            error : true,
-                            message : data_from_server
-                        });
-                        res.send( jsonData );
-                        break;
-                }
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
 router.put( '/alertnumbers', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/alertnumbers/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
 router.put( '/alertemails', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/alertemails/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
 router.put( '/contactemail', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/contactemail/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
 router.put( '/ticketprices', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/ticketprices/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
 router.put( '/signatures', jsonParser, function( req, res ) {
-
-    var form_data = req.body;
     var userdata = JSON.parse( req.cookies['userdata'] );
-
     request(
         {
             url : http_helper.get_api_uri( 'settings/signatures/edit/', '' ),
             method : 'PUT',
             json : true,
-            body : encryption_system.encryptLongJSON( form_data ),
+            body : encryption_system.encryptLongJSON( req.body ),
             headers : {
                 'Authorization' : http_helper.get_basic_auth_w_token( encryption_system.decryptCookie( userdata.auth_data ) )
             }
         },
-        function( error, response, body ) {
-            switch (response.statusCode) {
-                case 200:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : false,
-                        data : data_from_server.data
-                    });
-                    res.send( jsonData );
-                    break;
-                default:
-                    var data_from_server = encryption_system.decryptLongJSON( body );
-                    var jsonData = JSON.stringify({
-                        error : true,
-                        message : data_from_server
-                    });
-                    res.send( jsonData );
-                    break;
-            }
-        }
+        ( error, response, body ) => { res.send( http_helper.data_format_ok( error, response, body ) ) }
     );
 });
 
