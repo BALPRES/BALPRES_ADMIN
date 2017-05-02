@@ -41,14 +41,14 @@
             <div class="col-md-12">
                 <center>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="options" id="monthOption" autocomplete="off" checked ng-click="all()"> Todas
+                        <label class="btn btn-danger" ng-click="pending_month()">
+                            <input type="radio" name="options" id="monthOption" autocomplete="off"> Pendientes
                         </label>
-                        <label class="btn btn-danger">
-                            <input type="radio" name="options" id="yearOption" autocomplete="off" ng-click="notpayed()"> No pagadas
+                        <label class="btn btn-success" ng-click="payed_month()">
+                            <input type="radio" name="options" id="yearOption" autocomplete="off"> Pagados
                         </label>
-                        <label class="btn btn-warning">
-                            <input type="radio" name="options" id="allOption" autocomplete="off" ng-click="next()"> Próximas
+                        <label class="btn btn-primary active" ng-click="all_months()">
+                            <input type="radio" name="options" id="allOption" autocomplete="off" checked> Todos
                         </label>
                     </div>
                 </center>
@@ -56,17 +56,21 @@
 
             <div class="col-md-12" style="overflow-y: scroll; height:480px;">
                 <br>
-                <div ng-repeat="r in reservations" class="card card-inverse" style="background-color: #333; border-color: #333;">
+                <div ng-repeat="r in tb_reservations" class="card" style="background-color: white; border-color: #333;">
                     <div class="card-block">
                         <h3 class="card-title">{{r.reservation_info.full_name}}</h3>
-                        <p ng-repeat="d in r.details" class="card-text">{{d.product.name}}</p>
-                        <p class="card-text">Capacidad : {{r.max_guests}}</p>
-                        <p class="card-text">Niños Extra : {{r.extra_guests_child}}</p>
-                        <p class="card-text">Adultos Extra : {{r.extra_guests_adult}}</p>
+                        <hr>
+                        <p class="lead" style="color:red;"> <b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></b> {{r.payment_status.name}}</p>
+                        <hr>
+                        <p ng-repeat="d in r.details" class="lead"><i class="fa fa-home" aria-hidden="true"></i> {{d.product.name}}</p>
+                        <p class="card-text"><b>Capacidad :</b> {{r.max_guests}}</p>
+                        <p class="card-text"><b>Niños Extra :</b> {{r.extra_guests_child}}</p>
+                        <p class="card-text"><b>Adultos Extra :</b> {{r.extra_guests_adult}}</p>
                         <p class="card-text">{{r.date_start|dateFilter}} - {{r.date_end|dateFilter}}</p>
+                        <hr>
                         <div class="row">
                             <div class="col-md-6">
-                                <a href="#" ng-click="delete($event, r.id)"class="btn btn-danger">Borrar</a>
+                                <a href="#" ng-click="delete($event, r.id)"class="btn btn-danger">Cancelar</a>
                             </div>
                             <div class="col-md-6">
                                 <a href="#/reservations/cabin/detail/{{r.id}}" class="btn btn-primary">Ver detalle</a>

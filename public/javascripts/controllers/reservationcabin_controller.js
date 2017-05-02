@@ -127,6 +127,7 @@ app
                 var getAllReservations = function( calendar ) {
                     ReservationCabinRepository.getAll( calendar ).success( function( data ) {
                         if( !data.error ) {
+                            $scope.tb_reservations = data.data;
                             $scope.reservations = data.data;
                             $scope.events.length = 0;
                             $scope.reservations.forEach( function( item, index ) {
@@ -340,6 +341,18 @@ app
                         $scope.errors =  "Ha habido un error.";
                     });
                 }, null );
+            };
+
+            $scope.all_months = function() {
+                $scope.tb_reservations = $scope.reservations;
+            };
+
+            $scope.payed_month = function() {
+                $scope.tb_reservations = $scope.reservations.filter( r => r.payment_status.name == "Pagada" );
+            };
+
+            $scope.pending_month = function() {
+                $scope.tb_reservations = $scope.reservations.filter( r => r.payment_status.name == "Pendiente" );
             };
         }
 
