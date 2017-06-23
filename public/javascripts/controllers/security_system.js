@@ -79,7 +79,7 @@ app
                             name : 'Punto de venta',
                             icon : 'fa fa-credit-card',
                             status : '',
-                            link : '#/reservations'
+                            link : '#/reservations/cabin/'
                         },
                         {
                             name : 'Ventas',

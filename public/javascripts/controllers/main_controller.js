@@ -9,7 +9,8 @@ var app = angular.module( 'BALPRES-ADMIN', [    'ngRoute',
                                                 'crud-service',
                                                 'image-service',
                                                 'document-service',
-                                                'naif.base64' ] )
+                                                'naif.base64',
+                                                'payment-service' ] )
     .run( [ '$rootScope', '$location', 'AuthRepository', function( $rootScope, $location, AuthRepository ) {
         $rootScope.isLoggedIn = {
             show_app : true,
@@ -214,6 +215,9 @@ var app = angular.module( 'BALPRES-ADMIN', [    'ngRoute',
             })
             .when( '/reports/', {
                 templateUrl : '../views/reports/reports.html'
+            })
+            .when( '/404', {
+                templateUrl : '../404.html'
             })
             .otherwise({
                 redirectTo : '/404'

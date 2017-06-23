@@ -23,6 +23,7 @@ var promotion = require( './routes/promotion' );
 var settings = require( './routes/settings' );
 var contents = require( './routes/contents' );
 var reports = require( './routes/reports' );
+var payments = require( './routes/payments' );
 
 var app = express();
 
@@ -49,6 +50,7 @@ app.use( '/promotion', promotion );
 app.use( '/settings', settings );
 app.use( '/contents', contents );
 app.use( '/reports', reports );
+app.use( '/payments', payments );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

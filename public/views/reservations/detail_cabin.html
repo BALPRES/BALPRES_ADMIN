@@ -12,15 +12,15 @@
 
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-7">
+        <div class="col-md-4">
             <h5 class="lead"> <i class="fa fa-bed" aria-hidden="true"></i> Disponibles</h5>
         </div>
-        <div class="co-md-4">
+        <div class="co-md-7">
             <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-envelope" aria-hidden="true"></i> Enviar</button>
             <button type="button" class="btn btn-sm btn-info" ng-click="print()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
             <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-bell-o" aria-hidden="true"></i> Alertar</button>
-            <button ng-if="reservation.payment_status.value == 1" type="button" class="btn btn-sm btn-danger" ng-click="pay($event, reservation.id)"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar</button>
-            <button ng-if="reservation.payment_status.value == 2" type="button" class="btn btn-sm btn-success" disabled><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagada</button>
+            <button ng-if="reservation.payment_info.payment_status.value == 1" type="button" class="btn btn-sm btn-danger" ng-click="pay($event, reservation.id)"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Marcar como Pagada</button>
+            <button ng-if="reservation.payment_info.payment_status.value == 2" type="button" class="btn btn-sm btn-success" disabled><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagada</button>
         </div>
     </div>
     <hr>
@@ -51,11 +51,21 @@
                     <li class="list-group-item"><b>Estado :</b> {{reservation.reservation_info.state}}</li>
                     <li class="list-group-item"><b>País :</b> {{reservation.reservation_info.country}}</li>
                 </ul>
-                <div class="card-block text-align-right">
-                    <button type="button" class="btn btn-sm btn-info pull-right"><i class="fa fa-print" aria-hidden="true"></i> Editar</button>
-                </div>
             </div>
 
+            <div class="card" style="width:100%;" ng-if="reservation.payment_info.collection_id">
+
+                <div class="card-block">
+                    <h4 class="card-title">Información de pago</h4>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>ID de pago :</b> {{reservation.payment_info.collection_id}}</li>
+                    <li class="list-group-item"><b>Estado de pago :</b> {{collection.status}}</li>
+                    <li class="list-group-item"><b>Forma de pago :</b> {{collection.payment_method_id}}</li>
+                    <li class="list-group-item"><b>Typo de pago :</b> {{collection.payment_type}}</li>
+                </ul>
+            </div>
         </div>
         <div class="col-md-8">
 

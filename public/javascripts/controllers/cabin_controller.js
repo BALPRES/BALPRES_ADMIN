@@ -8,29 +8,21 @@ app
             update : ( data ) => CRUDService.update( model, data ),
             remove : ( id ) => CRUDService.remove( model, id ),
             validateData : ( data, scope ) => {
-                var ban = false;
+                var ban = true;
                 scope.errors = "";
-                if( data.name.length > 1 && data.name.length < 100 ) {
-                    ban = true;
-                } else {
+                if( data.name.length == 0 || data.name.length > 100 ) {
                     ban = false;
                     scope.errors += "Escriba un nombre válido. \n";
                 }
-                if( data.description.length > 1 && data.description.length < 500 ) {
-                    ban = true;
-                } else {
+                if( data.description.length == 0 || data.description.length > 500 ) {
                     ban = false;
                     scope.errors += "Escriba una descripción válida. \n";
                 }
-                if( data.price > 0 ) {
-                    ban = true;
-                } else {
+                if( data.price == 0 ) {
                     ban = false;
                     scope.errors += "Agregué un precio válido. \n";
                 }
-                if( data.cabin_type > 0 ) {
-                    ban = true;
-                } else {
+                if( data.cabin_type == 0 ) {
                     ban = false;
                     scope.errors += "Seleccione un tipo de cabaña. \n";
                 }
@@ -125,6 +117,7 @@ app
                 allCabinTypes();
 
                 $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
+                    $scope.file = file;
                     $scope.cabin_image = fileObj.base64;
                 };
 

@@ -60,7 +60,7 @@
                     <div class="card-block">
                         <h3 class="card-title">{{r.reservation_info.full_name}}</h3>
                         <hr>
-                        <p class="lead" style="color:red;"> <b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></b> {{r.payment_status.name}}</p>
+                        <p class="lead" style="color:red;"> <b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></b> {{r.payment_info.payment_status.name}}</p>
                         <hr>
                         <p ng-repeat="d in r.details" class="lead"><i class="fa fa-home" aria-hidden="true"></i> {{d.product.name}}</p>
                         <p class="card-text"><b>Capacidad :</b> {{r.max_guests}}</p>

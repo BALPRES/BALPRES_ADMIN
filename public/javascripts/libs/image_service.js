@@ -1,6 +1,6 @@
 angular.module( 'image-service', [])
         .service( 'imageData', [ function() {
-            this.api_uri = "https://balpres-be-gunt2raro.c9users.io/api/";
+            this.api_uri = "https://blooming-eyrie-89149.herokuapp.com/api/";
             // Return the api uri for the images module
             this.getApiUri = function( ext ) {
                 return this.api_uri + ext;

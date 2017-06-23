@@ -48,6 +48,7 @@ app
                     'PromotionRepository',
                     'SettingsRepository',
                     'ReservationCabinRepository',
+                    'PaymentRepository',
                     function(
                         $scope,
                         $mdDialog,
@@ -59,7 +60,8 @@ app
                         CabinRepository,
                         PromotionRepository,
                         SettingsRepository,
-                        ReservationCabinRepository ) {
+                        ReservationCabinRepository,
+                        PaymentRepository  ) {
 
         if( AuthRepository.viewVerification() ) {
 
@@ -86,6 +88,17 @@ app
                 ReservationCabinRepository.getById( $routeParams.id ).success( function( data ) {
                     if( !data.error ){
                         $scope.reservation = data.data;
+                        if( $scope.reservation.payment_info.collection_id != 0 ) {
+                            PaymentRepository.getPayment( $scope.reservation.payment_info.collection_id ).success( function( d2 ) {
+                                if( !d2.error ) {
+                                    $scope.collection = d2.data.response.results[0].collection;
+                                } else {
+                                    $scope.errors = d2.message;
+                                }
+                            }).error( function( error ) {
+                                $scope.errors = error;
+                            });
+                        }
                     } else {
                         $scope.errors = data.message;
                     }
@@ -348,11 +361,11 @@ app
             };
 
             $scope.payed_month = function() {
-                $scope.tb_reservations = $scope.reservations.filter( r => r.payment_status.name == "Pagada" );
+                $scope.tb_reservations = $scope.reservations.filter( r => r.payment_info.payment_status.name == "Pagada" );
             };
 
             $scope.pending_month = function() {
-                $scope.tb_reservations = $scope.reservations.filter( r => r.payment_status.name == "Pendiente" );
+                $scope.tb_reservations = $scope.reservations.filter( r => r.payment_info.payment_status.name == "Pendiente" );
             };
         }
 

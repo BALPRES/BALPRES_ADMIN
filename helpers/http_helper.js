@@ -5,9 +5,9 @@ var http = require( 'http' ),
 **/
 var g_opts = {
     hostname : 'balpres-be-gunt2raro.c9users.io',
-    api_uri : 'http://balpres-be-gunt2raro.c9users.io:8080/api/',
+    api_uri : 'https://blooming-eyrie-89149.herokuapp.com/api/',
     port : '8080',
-    token : 'ZmVfYmFscHJlc190ZXN0X2FwcDpQUTVWRUt1OV81UXVuQ3o5'
+    token : 'YXBwX2FkbWlucGFuZWw6OU0/NFJdTFVHelYrJzJlRA=='
 };
 
 /**
