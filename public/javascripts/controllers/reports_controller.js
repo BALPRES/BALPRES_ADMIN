@@ -192,6 +192,7 @@ app
                             $scope.cabinreports_month.forEach( rm => $scope.month_cabin_reports.categories[0].category.push( { 'label' : '' + rm.cabin.name } ) );
                             $scope.cabinreports_month.forEach( rm => $scope.month_cabin_reports.dataset[0].data.push( { 'value' : rm.total } ) );
                             $scope.d_max_cabres = $scope.cabinreports_month.reduce( ( a, b ) => Math.max( parseInt( a.total ), parseInt( b.total ) ) == parseInt( a.total ) ? a : b );
+                            $scope.d_max_cabres_mr = $scope.cabinreports_month.reduce( ( a, b ) => Math.max( parseInt( a.total ), parseInt( b.total ) ) == parseInt( a.total ) ? a : b );
                         } else {
                             $scope.errors = data.message;
                         }
@@ -209,6 +210,7 @@ app
                             $scope.cabinreports_year.forEach( rm => $scope.year_cabin_reports.categories[0].category.push( { 'label' : '' + rm.cabin.name } ) );
                             $scope.cabinreports_year.forEach( rm => $scope.year_cabin_reports.dataset[0].data.push( { 'value' : rm.total } ) );
                             $scope.m_max_cabres = $scope.cabinreports_year.reduce( ( a, b ) => Math.max( parseInt( a.total ), parseInt( b.total ) ) == parseInt( a.total ) ? a : b );
+                            $scope.m_max_cabres_mr = $scope.cabinreports_year.reduce( ( a, b ) => Math.max( parseInt( a.total ), parseInt( b.total ) ) == parseInt( a.total ) ? a : b );
                         } else {
                             $scope.errors = data.message;
                         }
@@ -465,22 +467,22 @@ app
 
             $scope.pending_month = function() {
                 // filter by pending on months area
-                $scope.reservations_by_month_table = $scope.reservations_by_month.filter( r => r.payment_status.name == "Pendiente" );
+                $scope.reservations_by_month_table = $scope.reservations_by_month.filter( r => r.payment_info.payment_status.name == "Pendiente" );
             };
 
             $scope.pending_dates = function() {
                 // filter by pending on the dates area
-                $scope.reservations_by_dates_table = $scope.reservations_by_dates.filter( r => r.payment_status.name == "Pendiente" );
+                $scope.reservations_by_dates_table = $scope.reservations_by_dates.filter( r => r.payment_info.payment_status.name == "Pendiente" );
             };
 
             $scope.payed_month = function() {
                 // filter by payed reservations on months area
-                $scope.reservations_by_month_table = $scope.reservations_by_month.filter( r => r.payment_status.name == "Pagada" );
+                $scope.reservations_by_month_table = $scope.reservations_by_month.filter( r => r.payment_info.payment_status.name == "Pagada" );
             };
 
             $scope.payed_dates = function() {
                 // filter by payed reservations on dates area
-                $scope.reservations_by_dates_table = $scope.reservations_by_dates.filter( r => r.payment_status.name == "Pagada" );
+                $scope.reservations_by_dates_table = $scope.reservations_by_dates.filter( r => r.payment_info.payment_status.name == "Pagada" );
             };
 
             $scope.all_months = function() {
